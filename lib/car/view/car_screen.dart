@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_parking/car/component/search_field.dart';
+import 'package:flutter_parking/car/component/stat_card.dart';
+import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_parking/common/layout/default_layout.dart';
 
 class CarScreen extends StatelessWidget {
@@ -7,6 +9,8 @@ class CarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return SizedBox(
       width: double.infinity,
       child: Padding(
@@ -39,6 +43,43 @@ class CarScreen extends StatelessWidget {
               readOnly: true,
             ),
             _renderSizedBox(),
+            GridView.count(
+              childAspectRatio: (1 / .6),
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              mainAxisSpacing: 16.0,
+              crossAxisSpacing: 16.0,
+              children: [
+                StatCard(
+                  icon: Icons.directions_car_outlined,
+                  label: '전체',
+                  value: '121',
+                  color: PARKING_ALL_TEXT_COLOR,
+                  backColor: PARKING_ALL_BACK_COLOR,
+                ),
+                StatCard(
+                  icon: Icons.directions_car_outlined,
+                  label: '전체',
+                  value: '121',
+                  color: PARKING_ALL_TEXT_COLOR,
+                  backColor: PARKING_ALL_BACK_COLOR,
+                ),
+                StatCard(
+                  icon: Icons.directions_car_outlined,
+                  label: '전체',
+                  value: '121',
+                  color: PARKING_ALL_TEXT_COLOR,
+                  backColor: PARKING_ALL_BACK_COLOR,
+                ),
+                StatCard(
+                  icon: Icons.directions_car_outlined,
+                  label: '전체',
+                  value: '121',
+                  color: PARKING_ALL_TEXT_COLOR,
+                  backColor: PARKING_ALL_BACK_COLOR,
+                ),
+              ],
+            ),
           ],
         ),
       ),
