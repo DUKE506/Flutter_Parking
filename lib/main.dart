@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_parking/common/const/colors.dart';
+import 'package:flutter_parking/common/navigation/router.dart';
 import 'package:flutter_parking/common/view/root_tab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,7 +31,8 @@ class _App extends StatelessWidget {
         //statusBarBrightness 속성 - 다크모드 설정
       ),
     );
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       theme: ThemeData(
         // fontFamily: 'NotoSans',
         textTheme: TextTheme(
@@ -40,7 +42,6 @@ class _App extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: RootTab(),
     );
   }
 }

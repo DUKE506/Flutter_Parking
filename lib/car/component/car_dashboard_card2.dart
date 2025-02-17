@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/common/const/colors.dart';
+import 'package:go_router/go_router.dart';
 
 class CarDashboardCard2 extends StatelessWidget {
   final IconData icon;
@@ -9,6 +10,8 @@ class CarDashboardCard2 extends StatelessWidget {
   final Color textColor;
   final Color backColor;
   final bool? isFirst;
+  //필요할 때만(url 때문에 사용중)
+  final CarType? carType;
 
   const CarDashboardCard2({
     super.key,
@@ -17,6 +20,7 @@ class CarDashboardCard2 extends StatelessWidget {
     required this.value,
     required this.textColor,
     required this.backColor,
+    this.carType,
     this.isFirst = false,
   });
 
@@ -54,12 +58,13 @@ class CarDashboardCard2 extends StatelessWidget {
       textColor: textColor,
       backColor: backColor,
       isFirst: isFirst,
+      carType: model.carType,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return isFirst == true ? _renderMain() : _renderItem();
+    return isFirst == true ? _renderMain() : _renderItem(context);
   }
 
   //메인 카드
@@ -108,57 +113,62 @@ class CarDashboardCard2 extends StatelessWidget {
   }
 
   //하위 카드
-  Widget _renderItem() {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          width: 2,
-          color: Colors.grey.shade200,
+  Widget _renderItem(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        context.push('/parking/${carType}');
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 2,
+            color: Colors.grey.shade200,
+          ),
+          borderRadius: BorderRadius.circular(12.0),
         ),
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    color: backColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      icon,
-                      size: 25,
-                      color: textColor,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: backColor,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        icon,
+                        size: 25,
+                        color: textColor,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 8.0,
-                ),
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w500,
+                  SizedBox(
+                    width: 8.0,
                   ),
-                ),
-              ],
-            ),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.w500,
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
