@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 const BACKGROUND_COLOR = Color(0xFFFFFFFF);
 const BACKGROUND_GREY_LIGHT_COLOR = Color(0xFFF5F4F1);
 const BACKGROUND_GREY_DEEP_COLOR = Color(0xFFCCCBC8);
-const BACKGROUT_BLUE_LIGHT_COLOR = Color(0xFFF9FAFB);
+const BACKGROUND_BLUE_LIGHT_COLOR = Color(0xFFF9FAFB);
 
 // // Primary Colors
 // const PRIMARY_COLOR = Color(0xFFD4EAF7);
