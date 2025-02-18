@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_parking/common/navigation/router.dart';
-import 'package:flutter_parking/common/view/root_tab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {

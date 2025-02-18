@@ -48,8 +48,6 @@ class CarDashboardCard2 extends StatelessWidget {
         backColor = PARKING_EXTERNAL_BACK_COLOR;
         icon = Icons.groups_outlined;
         break;
-      default:
-        break;
     }
     return CarDashboardCard2(
       icon: icon,
@@ -116,7 +114,7 @@ class CarDashboardCard2 extends StatelessWidget {
   Widget _renderItem(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('/parking/${carType}');
+        context.push('/parking/$carType');
       },
       child: Container(
         decoration: BoxDecoration(

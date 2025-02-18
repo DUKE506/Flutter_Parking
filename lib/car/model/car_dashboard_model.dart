@@ -19,9 +19,6 @@ enum CarType {
         return '방문';
       case CarType.outside:
         return '외부';
-
-      default:
-        throw Exception('존재하지 않는 이름입니다.');
     }
   }
 }

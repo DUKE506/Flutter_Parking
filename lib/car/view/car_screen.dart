@@ -5,8 +5,6 @@ import 'package:flutter_parking/car/component/search_field.dart';
 
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/provider/car_provider.dart';
-import 'package:flutter_parking/common/const/colors.dart';
-import 'package:flutter_parking/common/layout/default_layout.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CarScreen extends ConsumerStatefulWidget {
@@ -23,8 +21,6 @@ class _CarScreenState extends ConsumerState<CarScreen> {
   Widget build(BuildContext context) {
     final data = ref.watch(carDashboardStateProvider);
 
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
     return SizedBox(
       width: double.infinity,
       child: Padding(

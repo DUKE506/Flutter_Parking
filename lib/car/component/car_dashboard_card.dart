@@ -41,8 +41,6 @@ class CarDashboardCard extends StatelessWidget {
         backColor = PARKING_EXTERNAL_BACK_COLOR;
         icon = Icons.groups_outlined;
         break;
-      default:
-        break;
     }
     return CarDashboardCard(
       icon: icon,

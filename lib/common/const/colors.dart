@@ -7,7 +7,7 @@ const BACKGROUND_GREY_DEEP_COLOR = Color(0xFFCCCBC8);
 const BACKGROUND_BLUE_LIGHT_COLOR = Color(0xFFF9FAFB);
 
 // // Primary Colors
-// const PRIMARY_COLOR = Color(0xFFD4EAF7);
+
 // const PRIMARY_DEEP_COLOR = Color(0xFFB6CCD8);
 
 // 메인색
@@ -15,6 +15,7 @@ const PRIMARY_COLOR = Color(0xFF3B82F6);
 const PRIMARY_Ligth_COLOR = Color(0xFFEFF6FF);
 
 // 강조색
+const ACCENT_LIGHT_COLOR = Color(0xFFD4EAF7);
 const ACCENT_COLOR = Color(0xFF71C4EF);
 const ACCENT_DEEP_COLOR = Color(0xFF00668C);
 
