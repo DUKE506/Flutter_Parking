@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_parking/car/component/car_parking_card.dart';
 import 'package:flutter_parking/car/component/search_field.dart';
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
+import 'package:flutter_parking/car/model/car_parking_model.dart';
+import 'package:flutter_parking/car/provider/car_provider.dart';
 import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_parking/common/layout/default_layout.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CarParkingListScreen extends StatefulWidget {
+class CarParkingListScreen extends ConsumerStatefulWidget {
   final CarType carType;
   const CarParkingListScreen({
     super.key,
@@ -14,18 +17,21 @@ class CarParkingListScreen extends StatefulWidget {
   });
 
   @override
-  State<CarParkingListScreen> createState() => _CarParkingListScreenState();
+  ConsumerState<CarParkingListScreen> createState() =>
+      _CarParkingListScreenState();
 }
 
-class _CarParkingListScreenState extends State<CarParkingListScreen>
+class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int tabIndex = 0;
+  late CarType type;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    type = widget.carType;
     _tabController = TabController(
       length: CarType.values.length,
       vsync: this,
@@ -36,6 +42,7 @@ class _CarParkingListScreenState extends State<CarParkingListScreen>
 
   void tabListener() {
     tabIndex = _tabController.index;
+    type = CarType.values[tabIndex];
   }
 
   @override
@@ -47,6 +54,9 @@ class _CarParkingListScreenState extends State<CarParkingListScreen>
 
   @override
   Widget build(BuildContext context) {
+    final provider = ref.watch(carParkingProvider);
+    ref.read(carParkingProvider.notifier).getCarPkaring(type: type);
+
     return DefaultLayout(
         title: '주차 차량',
         body: Column(
@@ -57,7 +67,32 @@ class _CarParkingListScreenState extends State<CarParkingListScreen>
               child: SearchField(),
             ),
             _renderTabBar(_tabController),
-            _renderList(),
+            // _renderList(provider),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: CarType.values.map((type) {
+                  return Container(
+                    color: BACKGROUND_BLUE_LIGHT_COLOR,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 16.0),
+                        child: Column(
+                          spacing: 8,
+                          children: provider
+                              .map(
+                                (model) =>
+                                    CarParkingCard.fromModel(model: model),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
           ],
         ));
   }
@@ -112,35 +147,29 @@ class _CarParkingListScreenState extends State<CarParkingListScreen>
     );
   }
 
-  Widget _renderList() {
-    return Expanded(
-      child: Container(
-        color: BACKGROUND_BLUE_LIGHT_COLOR,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-            child: Column(
-              spacing: 8,
-              children: [
-                CarParkingCard(),
-                CarParkingCard(),
-                CarParkingCard(),
-                CarParkingCard(),
-                CarParkingCard(),
-                CarParkingCard(),
-                CarParkingCard(),
-                CarParkingCard(),
-                CarParkingCard(),
-                CarParkingCard(),
-                CarParkingCard(),
-                CarParkingCard(),
-                CarParkingCard(),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _renderList(List<CarParkingModel> models) {
+  //   return Expanded(
+  //     child: TabBarView(
+  //         controller: _tabController, children: CarType.values.map((type) {})),
+  //   );
+  // }
 }
+
+
+//  Container(
+//           color: BACKGROUND_BLUE_LIGHT_COLOR,
+//           child: SingleChildScrollView(
+//             child: Padding(
+//               padding:
+//                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+//               child: Column(
+//                 spacing: 8,
+//                 children: models
+//                     .map(
+//                       (model) => CarParkingCard.fromModel(model: model),
+//                     )
+//                     .toList(),
+//               ),
+//             ),
+//           ),
+//         ),

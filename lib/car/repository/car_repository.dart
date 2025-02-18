@@ -22,7 +22,7 @@ abstract class CarRepository {
   //대시보드 데이터[인터페이스]
   Future<List<CarDashboardModel>> getCarStatus();
   //주차차량 조회
-  Future<List<CarParkingModel>> getCarParkingAll();
+  Future<List<CarParkingModel>> getCarParkingByType({required CarType type});
 }
 
 //목업 리포지토리
@@ -36,12 +36,24 @@ class MockCarRepository implements CarRepository {
         .toList();
   }
 
-  //주차차량 전체
+  //타입별 주차 차량 조회
   @override
-  Future<List<CarParkingModel>> getCarParkingAll() async {
+  Future<List<CarParkingModel>> getCarParkingByType({
+    required CarType type,
+  }) async {
     // TODO: implement getCarParkingAll
     await Future.delayed(Duration(seconds: 1));
+
+    //전체 경우 리턴
+    if (type == CarType.all) {
+      return carParkingData
+          .map((json) => CarParkingModel.fromJson(json))
+          .toList();
+    }
+
+    // 타입별 리턴
     return carParkingData
+        .where((json) => json['carType'] == type.name)
         .map((json) => CarParkingModel.fromJson(json))
         .toList();
   }

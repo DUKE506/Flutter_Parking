@@ -1,8 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_parking/car/model/car_dashboard_model.dart';
+import 'package:flutter_parking/car/model/car_parking_model.dart';
+import 'package:flutter_parking/car/utils/car_type_color.dart';
 import 'package:flutter_parking/common/const/colors.dart';
 
 class CarParkingCard extends StatelessWidget {
-  const CarParkingCard({super.key});
+  final String number;
+  final String name;
+  final DateTime entryTime;
+  final CarType carType;
+  final Color textColor;
+  final Color backColor;
+
+  const CarParkingCard({
+    super.key,
+    required this.number,
+    required this.name,
+    required this.entryTime,
+    required this.carType,
+    required this.textColor,
+    required this.backColor,
+  });
+
+  factory CarParkingCard.fromModel({required CarParkingModel model}) {
+    Color textColor = PARKING_ALL_TEXT_COLOR;
+    Color backColor = PARKING_ALL_BACK_COLOR;
+    final List<Color> colors = CarTypeColor.getTypeColor(model.carType);
+    textColor = colors[0];
+    backColor = colors[1];
+
+    return CarParkingCard(
+      number: model.number,
+      name: model.name,
+      entryTime: model.entryTime,
+      carType: model.carType,
+      textColor: textColor,
+      backColor: backColor,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +60,7 @@ class CarParkingCard extends StatelessWidget {
               children: [
                 //차량번호
                 Text(
-                  '07가 4991',
+                  number,
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w900,
@@ -35,16 +70,16 @@ class CarParkingCard extends StatelessWidget {
                 //뱃지
                 Container(
                   decoration: BoxDecoration(
-                    color: PARKING_ALL_BACK_COLOR,
+                    color: backColor,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 4.0),
                     child: Text(
-                      '이동희',
+                      name,
                       style: TextStyle(
-                          color: PARKING_ALL_TEXT_COLOR,
+                          color: textColor,
                           fontSize: 12.0,
                           fontWeight: FontWeight.w500),
                     ),
@@ -61,7 +96,7 @@ class CarParkingCard extends StatelessWidget {
                   color: DEACTIVATE_TEXT_COLOR,
                 ),
                 Text(
-                  '2025-02-15 18:42:17',
+                  entryTime.toString(),
                   style: TextStyle(
                     fontSize: 14,
                     color: DEACTIVATE_TEXT_COLOR,

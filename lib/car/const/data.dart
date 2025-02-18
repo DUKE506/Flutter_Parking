@@ -88,13 +88,4 @@ final List<Map<String, dynamic>> carParkingData = [
     'carType': 'outside',
     'entryTime': DateTime(2025, 2, 18, 15, 20).toIso8601String(),
   },
-
-  // All type (for demonstration)
-  {
-    'id': 'all-001',
-    'number': '대전 9988',
-    'name': '전체조회',
-    'carType': 'all',
-    'entryTime': DateTime(2025, 2, 18, 16, 10).toIso8601String(),
-  },
 ];
