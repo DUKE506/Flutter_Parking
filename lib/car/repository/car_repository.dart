@@ -3,9 +3,12 @@
 
 //대시보드 데이터
 //
+import 'dart:convert';
+
 import 'package:flutter_parking/car/const/data.dart';
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/model/car_parking_model.dart';
+import 'package:flutter_parking/common/model/list_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'car_repository.g.dart';
@@ -22,7 +25,8 @@ abstract class CarRepository {
   //대시보드 데이터[인터페이스]
   Future<List<CarDashboardModel>> getCarStatus();
   //주차차량 조회
-  Future<List<CarParkingModel>> getCarParkingByType({required CarType type});
+  Future<ListModel<CarParkingModel>> getCarParkingByType(
+      {required CarType type});
 }
 
 //목업 리포지토리
@@ -38,23 +42,30 @@ class MockCarRepository implements CarRepository {
 
   //타입별 주차 차량 조회
   @override
-  Future<List<CarParkingModel>> getCarParkingByType({
+  Future<ListModel<CarParkingModel>> getCarParkingByType({
     required CarType type,
   }) async {
-    // TODO: implement getCarParkingAll
-    await Future.delayed(Duration(seconds: 1));
+    // await Future.delayed(Duration(seconds: 1));
 
     //전체 경우 리턴
     if (type == CarType.all) {
-      return carParkingData
-          .map((json) => CarParkingModel.fromJson(json))
-          .toList();
+      final data = ListModel<CarParkingModel>(
+        data: carParkingData
+            .map(
+              (json) => CarParkingModel.fromJson(json),
+            )
+            .toList(),
+      );
+      return data;
     }
 
-    // 타입별 리턴
-    return carParkingData
-        .where((json) => json['carType'] == type.name)
-        .map((json) => CarParkingModel.fromJson(json))
-        .toList();
+    //타입별 데이터
+    final filterData =
+        carParkingData.where((json) => json['carType'] == type.name).toList();
+
+    final data = ListModel<CarParkingModel>(
+      data: filterData.map((json) => CarParkingModel.fromJson(json)).toList(),
+    );
+    return data;
   }
 }

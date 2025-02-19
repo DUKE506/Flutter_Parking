@@ -1,6 +1,6 @@
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
-import 'package:flutter_parking/car/model/car_parking_model.dart';
 import 'package:flutter_parking/car/repository/car_repository.dart';
+import 'package:flutter_parking/common/model/list_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -20,23 +20,23 @@ Future<List<CarDashboardModel>> carDashboardState(ref) async {
 }
 
 final carParkingProvider =
-    StateNotifierProvider<CarParkingStateNotifier, List<CarParkingModel>>(
-        (ref) {
+    StateNotifierProvider<CarParkingStateNotifier, ListModelBase>((ref) {
   final repository = ref.watch(carRepositoryProvider);
   final notifier = CarParkingStateNotifier(repository: repository);
   return notifier;
 });
 
-class CarParkingStateNotifier extends StateNotifier<List<CarParkingModel>> {
+class CarParkingStateNotifier extends StateNotifier<ListModelBase> {
   final CarRepository repository;
 
   CarParkingStateNotifier({
     required this.repository,
-  }) : super([]);
+  }) : super(ListModel(data: []));
 
   //주차 목록 조회
-  Future<void> getCarPkaring({required CarType type}) async {
-    print('조회 : $type');
+  Future<void> getCarParking({required CarType type}) async {
+    state = ListModelLoading();
+
     state = await repository.getCarParkingByType(type: type);
   }
 }

@@ -59,54 +59,66 @@ class CarParkingCard extends StatelessWidget {
               spacing: 8.0,
               children: [
                 //차량번호
-                Text(
-                  number,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w900,
-                    // color: TEXT_COLOR,
-                  ),
-                ),
+                _title(),
                 //뱃지
-                Container(
-                  decoration: BoxDecoration(
-                    color: backColor,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 4.0),
-                    child: Text(
-                      name,
-                      style: TextStyle(
-                          color: textColor,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                ),
+                _badge(),
               ],
             ),
-            Row(
-              spacing: 8.0,
-              children: [
-                Icon(
-                  Icons.schedule_outlined,
-                  size: 16,
-                  color: DEACTIVATE_TEXT_COLOR,
-                ),
-                Text(
-                  entryTime.toString(),
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: DEACTIVATE_TEXT_COLOR,
-                  ),
-                ),
-              ],
-            )
+            _time(),
           ],
         ),
       ),
+    );
+  }
+
+  //차번호
+  Widget _title() {
+    return Text(
+      number,
+      style: TextStyle(
+        fontSize: 18.0,
+        fontWeight: FontWeight.w900,
+        // color: TEXT_COLOR,
+      ),
+    );
+  }
+
+  //타입별 뱃지
+  Widget _badge() {
+    return Container(
+      decoration: BoxDecoration(
+        color: backColor,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        child: Text(
+          name,
+          style: TextStyle(
+              color: textColor, fontSize: 12.0, fontWeight: FontWeight.w500),
+        ),
+      ),
+    );
+  }
+
+  //시간
+  Widget _time() {
+    return Row(
+      spacing: 8.0,
+      children: [
+        Icon(
+          Icons.schedule_outlined,
+          size: 16,
+          color: DEACTIVATE_TEXT_COLOR,
+        ),
+        Text(
+          entryTime.toString(),
+          style: TextStyle(
+            fontSize: 14,
+            color: DEACTIVATE_TEXT_COLOR,
+          ),
+        ),
+      ],
     );
   }
 }
