@@ -45,8 +45,7 @@ class MockCarRepository implements CarRepository {
   Future<ListModel<CarParkingModel>> getCarParkingByType({
     required CarType type,
   }) async {
-    // await Future.delayed(Duration(seconds: 1));
-
+    await Future.delayed(Duration(milliseconds: 300));
     //전체 경우 리턴
     if (type == CarType.all) {
       final data = ListModel<CarParkingModel>(

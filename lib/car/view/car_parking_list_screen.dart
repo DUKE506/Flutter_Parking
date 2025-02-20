@@ -30,7 +30,6 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
 
   @override
   void initState() {
-    print('===================inits 실행===================');
     // TODO: implement initState
     super.initState();
     type = widget.carType;
@@ -48,7 +47,10 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    ref.read(carParkingProvider.notifier).getCarParking(type: type);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(carParkingProvider.notifier).getCarParking(type: type);
+    });
   }
 
   //탭 누를 때마다 실행
@@ -68,17 +70,19 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
     final rawData = ref.watch(carParkingProvider);
 
     return DefaultLayout(
-      title: '주차 차량',
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            _renderTop(_tabController),
+            _renderAppBar(title: '주차 차량'),
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: customSliverPersistentHeaderDelegate(
+                child: SearchField(),
+              ),
+            ),
+            _tab(tabController: _tabController),
           ];
         },
-        // body: carParkingTabBarView(
-        //   data: rawData,
-        //   tabController: _tabController,
-        // ),
         body: _renderTabBarView(
           controller: _tabController,
           rawData: rawData,
@@ -87,78 +91,58 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
     );
   }
 
-  //검색 앱바
-  SliverAppBar _renderTop(TabController controller) {
-    return SliverAppBar(
-      pinned: true,
-      automaticallyImplyLeading: false,
-      toolbarHeight: 100,
-      backgroundColor: Colors.white,
-      scrolledUnderElevation: 0,
-      title: Container(
-        child: SearchField(),
-      ),
-      bottom: PreferredSize(
-        preferredSize: Size.fromHeight(40),
-        child: Container(
-          //탭
-          child: _tap(controller),
-        ),
-      ),
-    );
-  }
-
   //tab 컴포넌트
-  Widget _tap(TabController tabController) {
-    return TabBar(
-      onTap: (index) {
-        tabController.animateTo(index);
-        final newType = CarType.values[tabIndex];
-        ref.read(carParkingProvider.notifier).getCarParking(type: newType);
-        // setState(() {});
-      },
-      //컨트롤러
-      controller: tabController,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      //tabbar 전체 bottom border
-      dividerColor: Colors.transparent,
-      //선택 되었다는 효과
-      indicator: BoxDecoration(),
-
-      labelPadding: EdgeInsets.zero,
-
-      unselectedLabelColor: DEACTIVATE_TEXT_COLOR,
-      labelColor: ACCENT_DEEP_COLOR,
-      overlayColor: WidgetStatePropertyAll(Colors.transparent),
-      unselectedLabelStyle: TextStyle(),
-      labelStyle: TextStyle(
-        fontWeight: FontWeight.w600,
-        fontSize: 14.0,
-      ),
-      tabs: List.generate(
-        CarType.values.length,
-        (index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: index == tabController.index
-                    ? ACCENT_LIGHT_COLOR
-                    : BACKGROUND_GREY_LIGHT_COLOR,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 25.0,
-                  vertical: 12.0,
-                ),
-                child: Text(
-                  CarType.values[index].KrName,
-                ),
-              ),
-            ),
-          );
+  SliverToBoxAdapter _tab({required TabController tabController}) {
+    return SliverToBoxAdapter(
+      child: TabBar(
+        onTap: (index) {
+          tabController.animateTo(index);
+          final newType = CarType.values[tabIndex];
+          ref.read(carParkingProvider.notifier).getCarParking(type: newType);
         },
+        //컨트롤러
+        controller: tabController,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        //tabbar 전체 bottom border
+        dividerColor: Colors.transparent,
+        //선택 되었다는 효과
+        indicator: BoxDecoration(),
+
+        labelPadding: EdgeInsets.zero,
+
+        unselectedLabelColor: DEACTIVATE_TEXT_COLOR,
+        labelColor: ACCENT_DEEP_COLOR,
+        overlayColor: WidgetStatePropertyAll(Colors.transparent),
+        unselectedLabelStyle: TextStyle(),
+        labelStyle: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 14.0,
+        ),
+        tabs: List.generate(
+          CarType.values.length,
+          (index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: index == tabController.index
+                      ? ACCENT_LIGHT_COLOR
+                      : BACKGROUND_GREY_LIGHT_COLOR,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 25.0,
+                    vertical: 12.0,
+                  ),
+                  child: Text(
+                    CarType.values[index].KrName,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -189,10 +173,10 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
       children: CarType.values.map(
         (type) {
           return Container(
-            color: BACKGROUND_BLUE_LIGHT_COLOR,
+            color: Colors.white,
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
-              vertical: 16.0,
+              // vertical: 16.0,
             ),
             child: ListView.builder(
               itemBuilder: (context, index) {
@@ -208,68 +192,56 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
       ).toList(),
     );
   }
+
+  SliverAppBar _renderAppBar({required String title}) {
+    return SliverAppBar(
+      centerTitle: true,
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 16.0,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      backgroundColor: Colors.white,
+    );
+  }
 }
 
-class carParkingTabBarView extends ConsumerStatefulWidget {
-  final ListModelBase data;
-  final TabController tabController;
-  const carParkingTabBarView({
-    super.key,
-    required this.data,
-    required this.tabController,
+class customSliverPersistentHeaderDelegate
+    extends SliverPersistentHeaderDelegate {
+  final Widget child;
+
+  customSliverPersistentHeaderDelegate({
+    required this.child,
   });
 
   @override
-  ConsumerState<carParkingTabBarView> createState() =>
-      _carParkingTabBarViewState();
-}
-
-class _carParkingTabBarViewState extends ConsumerState<carParkingTabBarView> {
-  @override
-  Widget build(BuildContext context) {
-    // final rawData = ref.watch(carParkingProvider);
-    final rawData = widget.data;
-    if (rawData is ListModelLoading) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-    //에러
-    if (rawData is ListModelError) {
-      return DefaultLayout(
-        body: Center(
-          child: Text(
-            rawData.message,
-          ),
-        ),
-      );
-    }
-
-    final data = rawData as ListModel;
-
-    return TabBarView(
-      controller: widget.tabController,
-      physics: NeverScrollableScrollPhysics(),
-      children: CarType.values.map(
-        (type) {
-          return Container(
-            color: BACKGROUND_BLUE_LIGHT_COLOR,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 16.0,
-            ),
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child: CarParkingCard.fromModel(model: data.data[index]),
-                );
-              },
-              itemCount: data.data.length,
-            ),
-          );
-        },
-      ).toList(),
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    // TODO: implement build
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: child,
     );
+  }
+
+  @override
+  // TODO: implement maxExtent
+  double get maxExtent => 48;
+
+  @override
+  // TODO: implement minExtent
+  double get minExtent => 48;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    // TODO: implement shouldRebuild
+    return true;
   }
 }

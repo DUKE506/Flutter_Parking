@@ -62,49 +62,54 @@ class CarDashboardCard2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isFirst == true ? _renderMain() : _renderItem(context);
+    return isFirst == true ? _renderMain(context) : _renderItem(context);
   }
 
   //메인 카드
-  Widget _renderMain() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.0),
-        color: textColor,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w900,
-                    color: backColor,
+  Widget _renderMain(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        context.push('/parking/$carType');
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.0),
+          color: textColor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w900,
+                      color: backColor,
+                    ),
                   ),
-                ),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 28.0,
-                    fontWeight: FontWeight.w900,
-                    color: backColor,
+                  Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w900,
+                      color: backColor,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Icon(
-              icon,
-              size: 40,
-              color: backColor,
-            ),
-          ],
+                ],
+              ),
+              Icon(
+                icon,
+                size: 40,
+                color: backColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

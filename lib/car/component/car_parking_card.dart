@@ -3,8 +3,10 @@ import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/model/car_parking_model.dart';
 import 'package:flutter_parking/car/utils/car_type_color.dart';
 import 'package:flutter_parking/common/const/colors.dart';
+import 'package:go_router/go_router.dart';
 
 class CarParkingCard extends StatelessWidget {
+  final String id;
   final String number;
   final String name;
   final DateTime entryTime;
@@ -14,6 +16,7 @@ class CarParkingCard extends StatelessWidget {
 
   const CarParkingCard({
     super.key,
+    required this.id,
     required this.number,
     required this.name,
     required this.entryTime,
@@ -30,6 +33,7 @@ class CarParkingCard extends StatelessWidget {
     backColor = colors[1];
 
     return CarParkingCard(
+      id: model.id,
       number: model.number,
       name: model.name,
       entryTime: model.entryTime,
@@ -41,31 +45,36 @@ class CarParkingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          width: 2,
-          color: BACKGROUND_GREY_LIGHT_COLOR,
+    return GestureDetector(
+      onTap: () {
+        context.push('/parking/detail/$id');
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 2,
+            color: BACKGROUND_GREY_LIGHT_COLOR,
+          ),
+          borderRadius: BorderRadius.circular(12.0),
+          color: Colors.white,
         ),
-        borderRadius: BorderRadius.circular(12.0),
-        color: Colors.white,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-        child: Column(
-          spacing: 8.0,
-          children: [
-            Row(
-              spacing: 8.0,
-              children: [
-                //차량번호
-                _title(),
-                //뱃지
-                _badge(),
-              ],
-            ),
-            _time(),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          child: Column(
+            spacing: 8.0,
+            children: [
+              Row(
+                spacing: 8.0,
+                children: [
+                  //차량번호
+                  _title(),
+                  //뱃지
+                  _badge(),
+                ],
+              ),
+              _time(),
+            ],
+          ),
         ),
       ),
     );

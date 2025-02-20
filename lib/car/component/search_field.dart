@@ -30,7 +30,7 @@ class SearchField extends StatelessWidget {
       decoration: InputDecoration(
           prefixIcon: Icon(Icons.search_outlined),
           prefixIconColor: DEACTIVATE_TEXT_COLOR,
-          contentPadding: const EdgeInsetsDirectional.all(20.0),
+          contentPadding: const EdgeInsetsDirectional.all(10.0),
           hintText: hintText,
           hintStyle: TextStyle(
             color: DEACTIVATE_TEXT_COLOR,

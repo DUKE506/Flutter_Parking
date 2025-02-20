@@ -31,6 +31,7 @@ class DefaultLayout extends StatelessWidget {
       return null;
     }
     return AppBar(
+      centerTitle: true,
       title: Text(
         title!,
         style: TextStyle(
