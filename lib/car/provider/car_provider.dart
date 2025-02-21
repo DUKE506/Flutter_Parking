@@ -37,6 +37,6 @@ class CarParkingStateNotifier extends StateNotifier<ListModelBase> {
   Future<void> getCarParking({required CarType type}) async {
     state = ListModelLoading();
 
-    state = await repository.getCarParkingByType(type: type);
+    state = await repository.getCarParkingByTypeMock(type: type);
   }
 }

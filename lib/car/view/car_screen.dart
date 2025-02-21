@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_parking/car/component/car_dashboard_card.dart';
 import 'package:flutter_parking/car/component/car_dashboard_card2.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_parking/car/component/search_field.dart';
 
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/provider/car_provider.dart';
+import 'package:flutter_parking/common/dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CarScreen extends ConsumerStatefulWidget {
@@ -16,6 +18,11 @@ class CarScreen extends ConsumerStatefulWidget {
 
 class _CarScreenState extends ConsumerState<CarScreen> {
   bool _dashBoardSwitch = false;
+
+  apiRequest() {
+    final dio = Dio();
+    dio.interceptors.add(CustomInterceptor());
+  }
 
   @override
   Widget build(BuildContext context) {
