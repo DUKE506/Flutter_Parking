@@ -3,12 +3,13 @@
 
 //대시보드 데이터
 //
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_parking/car/const/data.dart';
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/model/car_parking_model.dart';
+import 'package:flutter_parking/common/const/data.dart';
+import 'package:flutter_parking/common/dio/dio.dart';
 import 'package:flutter_parking/common/model/list_model.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -18,7 +19,9 @@ part 'car_repository.g.dart';
 //리포지토리 프로바이더
 @riverpod
 CarRepository carRepository(ref) {
-  final repo = MockCarRepository();
+  final dio = ref.watch(dioStateProvider);
+  final repo = CarRepository(dio, baseUrl: 'http://$ip/car');
+
   return repo;
 }
 
@@ -26,22 +29,17 @@ CarRepository carRepository(ref) {
 @RestApi()
 abstract class CarRepository {
   factory CarRepository(Dio dio, {String baseUrl}) = _CarRepository;
-  //대시보드 데이터[인터페이스]
-  Future<List<CarDashboardModel>> getCarStatusMock();
-  //주차차량 조회
-  Future<ListModel<CarParkingModel>> getCarParkingByTypeMock(
-      {required CarType type});
 
-  //대시보드 데이터 조회
-  @GET('/')
-  Future<List<CarDashboardModel>> getCarCount();
+  @GET('/dashboard')
+  Future<ListModel<CarDashboardModel>> getCarCount();
 
   @GET('/{type}')
-  Future<List<CarParkingModel>> getCarByType();
+  Future<ListModel<CarParkingModel>> getCarByType({
+    required CarType type,
+  });
 }
 
-//목업 리포지토리
-class MockCarRepository implements CarRepository {
+class TestCarRepository implements CarRepository {
   //대시보드 데이터
   @override
   Future<List<CarDashboardModel>> getCarStatusMock() async {
@@ -80,13 +78,13 @@ class MockCarRepository implements CarRepository {
   }
 
   @override
-  Future<List<CarParkingModel>> getCarByType() {
+  Future<ListModel<CarParkingModel>> getCarByType({required CarType type}) {
     // TODO: implement getCarByType
     throw UnimplementedError();
   }
 
   @override
-  Future<List<CarDashboardModel>> getCarCount() {
+  Future<ListModel<CarDashboardModel>> getCarCount() {
     // TODO: implement getCarCount
     throw UnimplementedError();
   }

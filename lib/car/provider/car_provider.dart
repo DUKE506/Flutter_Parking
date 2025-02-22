@@ -15,7 +15,7 @@ Future<List<CarDashboardModel>> carDashboardState(ref) async {
   //데이터가 없는경우가 존재하지 않음(추후 추가)
 
   // 1.데이터가 존재하는 경우
-  final data = repository.getCarStatus();
+  final data = repository.getCarCount();
   return data;
 }
 
@@ -37,6 +37,6 @@ class CarParkingStateNotifier extends StateNotifier<ListModelBase> {
   Future<void> getCarParking({required CarType type}) async {
     state = ListModelLoading();
 
-    state = await repository.getCarParkingByTypeMock(type: type);
+    state = await repository.getCarByType(type: type);
   }
 }

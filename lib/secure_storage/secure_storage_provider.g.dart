@@ -1,29 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'car_provider.dart';
+part of 'secure_storage_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$carDashboardStateHash() => r'95d358fadb8bf9b9ce924244aacb9f74906fc8b8';
+String _$secureStorageStateHash() =>
+    r'bbefbb537952a7551828c744a3228dbed27a0632';
 
-/// See also [carDashboardState].
-@ProviderFor(carDashboardState)
-final carDashboardStateProvider =
-    AutoDisposeFutureProvider<List<CarDashboardModel>>.internal(
-  carDashboardState,
-  name: r'carDashboardStateProvider',
+/// See also [SecureStorageState].
+@ProviderFor(SecureStorageState)
+final secureStorageStateProvider =
+    AutoDisposeProvider<FlutterSecureStorage>.internal(
+  SecureStorageState,
+  name: r'secureStorageStateProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$carDashboardStateHash,
+      : _$secureStorageStateHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef CarDashboardStateRef
-    = AutoDisposeFutureProviderRef<List<CarDashboardModel>>;
+typedef SecureStorageStateRef = AutoDisposeProviderRef<FlutterSecureStorage>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
