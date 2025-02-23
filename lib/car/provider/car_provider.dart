@@ -16,6 +16,7 @@ Future<List<CarDashboardModel>> carDashboardState(ref) async {
 
   // 1.데이터가 존재하는 경우
   final data = repository.getCarCount();
+  print(data);
   return data;
 }
 
@@ -36,7 +37,8 @@ class CarParkingStateNotifier extends StateNotifier<ListModelBase> {
   //주차 목록 조회
   Future<void> getCarParking({required CarType type}) async {
     state = ListModelLoading();
-
+    print(type);
     state = await repository.getCarByType(type: type);
+    print('프로바이더 : $state');
   }
 }

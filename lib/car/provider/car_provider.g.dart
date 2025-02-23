@@ -6,7 +6,7 @@ part of 'car_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$carDashboardStateHash() => r'95d358fadb8bf9b9ce924244aacb9f74906fc8b8';
+String _$carDashboardStateHash() => r'f9672db746f8e9bb94df7e77a6ddd5210e064e3c';
 
 /// See also [carDashboardState].
 @ProviderFor(carDashboardState)

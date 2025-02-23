@@ -31,61 +31,61 @@ abstract class CarRepository {
   factory CarRepository(Dio dio, {String baseUrl}) = _CarRepository;
 
   @GET('/dashboard')
-  Future<ListModel<CarDashboardModel>> getCarCount();
+  Future<List<CarDashboardModel>> getCarCount();
 
   @GET('/{type}')
   Future<ListModel<CarParkingModel>> getCarByType({
-    required CarType type,
+    @Path('type') required CarType type,
   });
 }
 
-class TestCarRepository implements CarRepository {
-  //대시보드 데이터
-  @override
-  Future<List<CarDashboardModel>> getCarStatusMock() async {
-    await Future.delayed(Duration(milliseconds: 1000));
-    return carDashBoardData
-        .map((json) => CarDashboardModel.fromJson(json))
-        .toList();
-  }
+// class TestCarRepository implements CarRepository {
+//   //대시보드 데이터
+//   @override
+//   Future<List<CarDashboardModel>> getCarStatusMock() async {
+//     await Future.delayed(Duration(milliseconds: 1000));
+//     return carDashBoardData
+//         .map((json) => CarDashboardModel.fromJson(json))
+//         .toList();
+//   }
 
-  //타입별 주차 차량 조회
-  @override
-  Future<ListModel<CarParkingModel>> getCarParkingByTypeMock({
-    required CarType type,
-  }) async {
-    await Future.delayed(Duration(milliseconds: 300));
-    //전체 경우 리턴
-    if (type == CarType.all) {
-      final data = ListModel<CarParkingModel>(
-        data: carParkingData
-            .map(
-              (json) => CarParkingModel.fromJson(json),
-            )
-            .toList(),
-      );
-      return data;
-    }
+//   //타입별 주차 차량 조회
+//   @override
+//   Future<ListModel<CarParkingModel>> getCarParkingByTypeMock({
+//     required CarType type,
+//   }) async {
+//     await Future.delayed(Duration(milliseconds: 300));
+//     //전체 경우 리턴
+//     if (type == CarType.all) {
+//       final data = ListModel<CarParkingModel>(
+//         data: carParkingData
+//             .map(
+//               (json) => CarParkingModel.fromJson(json),
+//             )
+//             .toList(),
+//       );
+//       return data;
+//     }
 
-    //타입별 데이터
-    final filterData =
-        carParkingData.where((json) => json['carType'] == type.name).toList();
+//     //타입별 데이터
+//     final filterData =
+//         carParkingData.where((json) => json['carType'] == type.name).toList();
 
-    final data = ListModel<CarParkingModel>(
-      data: filterData.map((json) => CarParkingModel.fromJson(json)).toList(),
-    );
-    return data;
-  }
+//     final data = ListModel<CarParkingModel>(
+//       data: filterData.map((json) => CarParkingModel.fromJson(json)).toList(),
+//     );
+//     return data;
+//   }
 
-  @override
-  Future<ListModel<CarParkingModel>> getCarByType({required CarType type}) {
-    // TODO: implement getCarByType
-    throw UnimplementedError();
-  }
+//   @override
+//   Future<ListModel<CarParkingModel>> getCarByType({required CarType type}) {
+//     // TODO: implement getCarByType
+//     throw UnimplementedError();
+//   }
 
-  @override
-  Future<ListModel<CarDashboardModel>> getCarCount() {
-    // TODO: implement getCarCount
-    throw UnimplementedError();
-  }
-}
+//   @override
+//   Future<ListModel<CarDashboardModel>> getCarCount() {
+//     // TODO: implement getCarCount
+//     throw UnimplementedError();
+//   }
+// }

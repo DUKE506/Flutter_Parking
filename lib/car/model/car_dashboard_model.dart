@@ -2,10 +2,15 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'car_dashboard_model.g.dart';
 
+@JsonEnum(valueField: 'carType')
 enum CarType {
+  @JsonValue('all')
   all,
+  @JsonValue('resident')
   resident,
+  @JsonValue('visit')
   visit,
+  @JsonValue('outside')
   outside;
 
   //한글 변환

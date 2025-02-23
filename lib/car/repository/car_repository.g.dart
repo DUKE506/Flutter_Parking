@@ -18,6 +18,38 @@ class _CarRepository implements CarRepository {
   final ParseErrorLogger? errorLogger;
 
   @override
+  Future<List<CarDashboardModel>> getCarCount() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<CarDashboardModel>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/dashboard',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<CarDashboardModel> _value;
+    try {
+      _value = _result.data!
+          .map(
+            (dynamic i) =>
+                CarDashboardModel.fromJson(i as Map<String, dynamic>),
+          )
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ListModel<CarParkingModel>> getCarByType({
     required CarType type,
   }) async {
@@ -29,7 +61,7 @@ class _CarRepository implements CarRepository {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/{type}',
+            '/${type.name}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -41,36 +73,6 @@ class _CarRepository implements CarRepository {
       _value = ListModel<CarParkingModel>.fromJson(
         _result.data!,
         (json) => CarParkingModel.fromJson(json as Map<String, dynamic>),
-      );
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<ListModel<CarDashboardModel>> getCarCount() async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ListModel<CarDashboardModel>>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/dashboard',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ListModel<CarDashboardModel> _value;
-    try {
-      _value = ListModel<CarDashboardModel>.fromJson(
-        _result.data!,
-        (json) => CarDashboardModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
