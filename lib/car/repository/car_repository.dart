@@ -7,6 +7,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_parking/car/const/data.dart';
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
+import 'package:flutter_parking/car/model/car_detail_model.dart';
 import 'package:flutter_parking/car/model/car_parking_model.dart';
 import 'package:flutter_parking/common/const/data.dart';
 import 'package:flutter_parking/common/dio/dio.dart';
@@ -37,55 +38,9 @@ abstract class CarRepository {
   Future<ListModel<CarParkingModel>> getCarByType({
     @Path('type') required CarType type,
   });
+
+  @GET('/detail/{id}')
+  Future<CarDetailModel> getDetailById({
+    @Path('id') required String id,
+  });
 }
-
-// class TestCarRepository implements CarRepository {
-//   //대시보드 데이터
-//   @override
-//   Future<List<CarDashboardModel>> getCarStatusMock() async {
-//     await Future.delayed(Duration(milliseconds: 1000));
-//     return carDashBoardData
-//         .map((json) => CarDashboardModel.fromJson(json))
-//         .toList();
-//   }
-
-//   //타입별 주차 차량 조회
-//   @override
-//   Future<ListModel<CarParkingModel>> getCarParkingByTypeMock({
-//     required CarType type,
-//   }) async {
-//     await Future.delayed(Duration(milliseconds: 300));
-//     //전체 경우 리턴
-//     if (type == CarType.all) {
-//       final data = ListModel<CarParkingModel>(
-//         data: carParkingData
-//             .map(
-//               (json) => CarParkingModel.fromJson(json),
-//             )
-//             .toList(),
-//       );
-//       return data;
-//     }
-
-//     //타입별 데이터
-//     final filterData =
-//         carParkingData.where((json) => json['carType'] == type.name).toList();
-
-//     final data = ListModel<CarParkingModel>(
-//       data: filterData.map((json) => CarParkingModel.fromJson(json)).toList(),
-//     );
-//     return data;
-//   }
-
-//   @override
-//   Future<ListModel<CarParkingModel>> getCarByType({required CarType type}) {
-//     // TODO: implement getCarByType
-//     throw UnimplementedError();
-//   }
-
-//   @override
-//   Future<ListModel<CarDashboardModel>> getCarCount() {
-//     // TODO: implement getCarCount
-//     throw UnimplementedError();
-//   }
-// }

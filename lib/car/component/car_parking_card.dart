@@ -47,6 +47,7 @@ class CarParkingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        print(id);
         context.push('/parking/detail/$id');
       },
       child: Container(

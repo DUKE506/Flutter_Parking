@@ -1,4 +1,6 @@
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
+import 'package:flutter_parking/car/model/car_detail_model.dart';
+import 'package:flutter_parking/car/model/car_parking_model.dart';
 import 'package:flutter_parking/car/repository/car_repository.dart';
 import 'package:flutter_parking/common/model/list_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,8 +45,19 @@ class CarParkingStateNotifier extends StateNotifier<ListModelBase> {
 
 //======================================================================================================
 
+@Riverpod(keepAlive: true)
+CarParkingModel? carDetail(Ref ref, {required String id}) {
+  final state = ref.watch(carStateProvider(null));
+
+  if (state is! ListModel) {
+    return null;
+  }
+
+  return state.data.firstWhere((m) => m.id == id);
+}
+
 final carStateProvider =
-    StateNotifierProvider.family<CarStateNotifier, ListModelBase, CarType>(
+    StateNotifierProvider.family<CarStateNotifier, ListModelBase, CarType?>(
         (ref, type) {
   //notifier에 전달할 리포지토리 호출;
   final repo = ref.watch(carRepositoryProvider);
@@ -59,18 +72,26 @@ final carStateProvider =
 class CarStateNotifier extends StateNotifier<ListModelBase> {
   //리포지토리 필드
   final CarRepository repository;
-  final CarType type;
+  final CarType? type;
 
   //생성자
   CarStateNotifier({
     required this.repository,
-    required this.type,
+    this.type,
   }) : super(ListModel(data: []));
 
   //조회
   Future<void> fetchData() async {
     // print('[CarStateNotifier][fetchData] 조회 함수 시작 (파라미터 : ${type})');
     state = ListModelLoading();
-    state = await repository.getCarByType(type: type);
+
+    if (type == null) {
+      return;
+    }
+    state = await repository.getCarByType(type: type!);
+  }
+
+  void getDetail({required String id}) async {
+    print('[CarStateNotifier][getDetail] 상세조회 함수 시작 (파라미터 : ${id})');
   }
 }

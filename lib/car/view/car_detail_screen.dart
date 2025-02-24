@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_parking/car/provider/car_provider.dart';
 import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_parking/common/layout/default_layout.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CarDetailScreen extends StatelessWidget {
+class CarDetailScreen extends ConsumerStatefulWidget {
   final String id;
   const CarDetailScreen({
     super.key,
@@ -10,7 +12,20 @@ class CarDetailScreen extends StatelessWidget {
   });
 
   @override
+  ConsumerState<CarDetailScreen> createState() => _CarDetailScreenState();
+}
+
+class _CarDetailScreenState extends ConsumerState<CarDetailScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    ref.read(carStateProvider(null).notifier).getDetail(id: widget.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final data = ref.watch(carDetailProvider(id: widget.id));
     return DefaultLayout(
       title: '상세정보',
       body: SingleChildScrollView(
