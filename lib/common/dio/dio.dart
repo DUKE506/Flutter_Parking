@@ -26,8 +26,7 @@ class CustomInterceptor extends Interceptor {
   //요청
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    print('request');
-    print(options);
+    print('[Request]${options.uri}');
     super.onRequest(options, handler);
   }
 

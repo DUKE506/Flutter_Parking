@@ -43,19 +43,27 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
     _tabController.addListener(tabListener);
   }
 
+  //탭 누를 때마다 실행
+  void tabListener() {
+    //인덱스가 변경됐을때만
+    if (!_tabController.indexIsChanging) {
+      return;
+    }
+    tabIndex = _tabController.index;
+    type = CarType.values[tabIndex];
+    ref.read(carStateProvider(type).notifier).fetchData();
+    setState(() {});
+  }
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(carParkingProvider.notifier).getCarParking(type: type);
+      // ref.read(carParkingProvider.notifier).getCarParking(type: type);
+      ref.read(carStateProvider(type).notifier).fetchData();
     });
-  }
-
-  //탭 누를 때마다 실행
-  void tabListener() {
-    tabIndex = _tabController.index;
   }
 
   @override
@@ -67,7 +75,7 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
 
   @override
   Widget build(BuildContext context) {
-    final rawData = ref.watch(carParkingProvider);
+    final rawData = ref.watch(carStateProvider(type));
 
     return DefaultLayout(
       body: NestedScrollView(
@@ -97,8 +105,6 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
       child: TabBar(
         onTap: (index) {
           tabController.animateTo(index);
-          final newType = CarType.values[tabIndex];
-          ref.read(carParkingProvider.notifier).getCarParking(type: newType);
         },
         //컨트롤러
         controller: tabController,
@@ -107,9 +113,7 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
         dividerColor: Colors.transparent,
         //선택 되었다는 효과
         indicator: BoxDecoration(),
-
         labelPadding: EdgeInsets.zero,
-
         unselectedLabelColor: DEACTIVATE_TEXT_COLOR,
         labelColor: ACCENT_DEEP_COLOR,
         overlayColor: WidgetStatePropertyAll(Colors.transparent),
@@ -166,7 +170,6 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
     }
 
     final data = rawData as ListModel;
-    print(data.data.length);
 
     return TabBarView(
       controller: controller,

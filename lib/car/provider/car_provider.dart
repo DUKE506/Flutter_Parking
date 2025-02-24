@@ -16,7 +16,7 @@ Future<List<CarDashboardModel>> carDashboardState(ref) async {
 
   // 1.데이터가 존재하는 경우
   final data = repository.getCarCount();
-  print(data);
+
   return data;
 }
 
@@ -37,8 +37,40 @@ class CarParkingStateNotifier extends StateNotifier<ListModelBase> {
   //주차 목록 조회
   Future<void> getCarParking({required CarType type}) async {
     state = ListModelLoading();
-    print(type);
     state = await repository.getCarByType(type: type);
-    print('프로바이더 : $state');
+  }
+}
+
+//======================================================================================================
+
+final carStateProvider =
+    StateNotifierProvider.family<CarStateNotifier, ListModelBase, CarType>(
+        (ref, type) {
+  //notifier에 전달할 리포지토리 호출;
+  final repo = ref.watch(carRepositoryProvider);
+
+  //상태변화를 관찰할 notifier 생성
+  final notifier = CarStateNotifier(repository: repo, type: type);
+
+  return notifier;
+});
+
+// =========구조 리펙토링 중==========
+class CarStateNotifier extends StateNotifier<ListModelBase> {
+  //리포지토리 필드
+  final CarRepository repository;
+  final CarType type;
+
+  //생성자
+  CarStateNotifier({
+    required this.repository,
+    required this.type,
+  }) : super(ListModel(data: []));
+
+  //조회
+  Future<void> fetchData() async {
+    // print('[CarStateNotifier][fetchData] 조회 함수 시작 (파라미터 : ${type})');
+    state = ListModelLoading();
+    state = await repository.getCarByType(type: type);
   }
 }

@@ -79,7 +79,6 @@ class _CarScreenState extends ConsumerState<CarScreen> {
                     : _renderDashboard2(models: models);
               },
               error: (error, stackTrace) {
-                print(stackTrace);
                 return Center(
                   child: Text('데이터 조회 실패 ${stackTrace}'),
                 );
