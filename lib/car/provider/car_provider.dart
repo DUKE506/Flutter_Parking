@@ -22,39 +22,28 @@ Future<List<CarDashboardModel>> carDashboardState(ref) async {
   return data;
 }
 
-final carParkingProvider =
-    StateNotifierProvider<CarParkingStateNotifier, ListModelBase>((ref) {
-  final repository = ref.watch(carRepositoryProvider);
-  final notifier = CarParkingStateNotifier(repository: repository);
-  return notifier;
-});
+// final carParkingProvider =
+//     StateNotifierProvider<CarParkingStateNotifier, ListModelBase>((ref) {
+//   final repository = ref.watch(carRepositoryProvider);
+//   final notifier = CarParkingStateNotifier(repository: repository);
+//   return notifier;
+// });
 
-class CarParkingStateNotifier extends StateNotifier<ListModelBase> {
-  final CarRepository repository;
+// class CarParkingStateNotifier extends StateNotifier<ListModelBase> {
+//   final CarRepository repository;
 
-  CarParkingStateNotifier({
-    required this.repository,
-  }) : super(ListModel(data: []));
+//   CarParkingStateNotifier({
+//     required this.repository,
+//   }) : super(ListModel(data: []));
 
-  //주차 목록 조회
-  Future<void> getCarParking({required CarType type}) async {
-    state = ListModelLoading();
-    state = await repository.getCarByType(type: type);
-  }
-}
+//   //주차 목록 조회
+//   Future<void> getCarParking({required CarType type}) async {
+//     state = ListModelLoading();
+//     state = await repository.getCarByType(type: type);
+//   }
+// }
 
 //======================================================================================================
-
-@Riverpod(keepAlive: true)
-CarParkingModel? carDetail(Ref ref, {required String id}) {
-  final state = ref.watch(carStateProvider(null));
-
-  if (state is! ListModel) {
-    return null;
-  }
-
-  return state.data.firstWhere((m) => m.id == id);
-}
 
 final carStateProvider =
     StateNotifierProvider.family<CarStateNotifier, ListModelBase, CarType?>(
@@ -78,7 +67,11 @@ class CarStateNotifier extends StateNotifier<ListModelBase> {
   CarStateNotifier({
     required this.repository,
     this.type,
-  }) : super(ListModel(data: []));
+  }) : super(ListModelLoading()) {
+    if (type != null) {
+      fetchData();
+    }
+  }
 
   //조회
   Future<void> fetchData() async {
@@ -93,5 +86,6 @@ class CarStateNotifier extends StateNotifier<ListModelBase> {
 
   void getDetail({required String id}) async {
     print('[CarStateNotifier][getDetail] 상세조회 함수 시작 (파라미터 : ${id})');
+    final res = await repository.getDetailById(id: id);
   }
 }

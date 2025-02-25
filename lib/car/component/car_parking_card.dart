@@ -28,14 +28,19 @@ class CarParkingCard extends StatelessWidget {
   factory CarParkingCard.fromModel({required CarParkingModel model}) {
     Color textColor = PARKING_ALL_TEXT_COLOR;
     Color backColor = PARKING_ALL_BACK_COLOR;
+    String? name = model.name ?? '';
     final List<Color> colors = CarTypeColor.getTypeColor(model.carType);
     textColor = colors[0];
     backColor = colors[1];
 
+    if (name.isEmpty) {
+      name = model.carType == CarType.outside ? '외부인' : '방문자';
+    }
+
     return CarParkingCard(
       id: model.id,
       number: model.number,
-      name: model.name,
+      name: name,
       entryTime: model.entryTime,
       carType: model.carType,
       textColor: textColor,
@@ -47,8 +52,7 @@ class CarParkingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print(id);
-        context.push('/parking/detail/$id');
+        context.push('/parking/detail/$id/${carType.name}');
       },
       child: Container(
         decoration: BoxDecoration(
@@ -73,6 +77,7 @@ class CarParkingCard extends StatelessWidget {
                   _badge(),
                 ],
               ),
+              //출입 시간
               _time(),
             ],
           ),
@@ -122,7 +127,7 @@ class CarParkingCard extends StatelessWidget {
           color: DEACTIVATE_TEXT_COLOR,
         ),
         Text(
-          entryTime.toString(),
+          entryTime.toString().split('.')[0],
           style: TextStyle(
             fontSize: 14,
             color: DEACTIVATE_TEXT_COLOR,

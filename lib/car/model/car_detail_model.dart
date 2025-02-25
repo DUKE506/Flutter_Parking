@@ -1,4 +1,5 @@
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
+import 'package:flutter_parking/car/model/car_parking_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'car_detail_model.g.dart';
@@ -44,6 +45,8 @@ class CarDetailModel {
   final String id;
   //차주명
   final String? name;
+  //모델명
+  final String? modelName;
   //차량번호
   final String number;
   //주소
@@ -60,6 +63,7 @@ class CarDetailModel {
   CarDetailModel({
     required this.id,
     this.name,
+    this.modelName,
     required this.number,
     this.address,
     this.phone,

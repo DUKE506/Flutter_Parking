@@ -29,6 +29,7 @@ CarDetailModel _$CarDetailModelFromJson(Map<String, dynamic> json) =>
     CarDetailModel(
       id: json['id'] as String,
       name: json['name'] as String?,
+      modelName: json['modelName'] as String?,
       number: json['number'] as String,
       address: json['address'] as String?,
       phone: json['phone'] as String?,
@@ -43,6 +44,7 @@ Map<String, dynamic> _$CarDetailModelToJson(CarDetailModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'modelName': instance.modelName,
       'number': instance.number,
       'address': instance.address,
       'phone': instance.phone,

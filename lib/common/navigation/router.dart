@@ -17,9 +17,11 @@ final GoRouter router = GoRouter(routes: [
     ),
   ),
   GoRoute(
-    path: '/parking/detail/:id',
+    path: '/parking/detail/:id/:carType',
     builder: (context, state) => CarDetailScreen(
       id: state.pathParameters['id']!,
+      carType: CarType.values
+          .firstWhere((e) => e.name == state.pathParameters['carType']!),
     ),
   ),
 ]);

@@ -10,7 +10,7 @@ CarParkingModel _$CarParkingModelFromJson(Map<String, dynamic> json) =>
     CarParkingModel(
       id: json['id'] as String,
       number: json['number'] as String,
-      name: json['name'] as String,
+      name: json['name'] as String?,
       carType: $enumDecode(_$CarTypeEnumMap, json['carType']),
       entryTime: DateTime.parse(json['entryTime'] as String),
     );

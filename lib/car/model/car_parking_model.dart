@@ -7,14 +7,14 @@ part 'car_parking_model.g.dart';
 class CarParkingModel {
   final String id;
   final String number;
-  final String name;
+  final String? name;
   final CarType carType;
   final DateTime entryTime;
 
   CarParkingModel({
     required this.id,
     required this.number,
-    required this.name,
+    this.name,
     required this.carType,
     required this.entryTime,
   });

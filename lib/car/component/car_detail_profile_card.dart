@@ -6,6 +6,7 @@ class CarDetailProfileCard extends StatelessWidget {
   final String? name;
   final String number;
   final String? address;
+  final String? modelName;
   final String? phone;
   final ParkingState state;
 
@@ -14,26 +15,42 @@ class CarDetailProfileCard extends StatelessWidget {
     this.name,
     required this.number,
     this.address,
+    this.modelName,
     this.phone,
     required this.state,
   });
 
+  factory CarDetailProfileCard.fromModel({required CarDetailModel model}) {
+    return CarDetailProfileCard(
+      name: model.name,
+      number: model.number,
+      address: model.address,
+      modelName: model.modelName,
+      phone: model.phone,
+      state: model.state,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _renderProfileItem(label: '이름', value: name),
-        _renderProfileItem(label: '모델명', value: ''),
-        _renderProfileItem(label: '차량번호', value: number),
-        _renderProfileItem(label: '주소', value: address),
-        _renderProfileItem(label: '전화번호', value: phone),
-        _renderProfileItem(
-            label: '주차상태',
-            value: state.KrName,
-            color: state == ParkingState.IN
-                ? PRIMARY_COLOR
-                : PARKING_EXTERNAL_TEXT_COLOR),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        spacing: 16.0,
+        children: [
+          _renderProfileItem(label: '이름', value: name),
+          _renderProfileItem(label: '모델명', value: modelName),
+          _renderProfileItem(label: '차량번호', value: number),
+          _renderProfileItem(label: '주소', value: address),
+          _renderProfileItem(label: '전화번호', value: phone),
+          _renderProfileItem(
+              label: '주차상태',
+              value: state.KrName,
+              color: state == ParkingState.IN
+                  ? PRIMARY_COLOR
+                  : PARKING_EXTERNAL_TEXT_COLOR),
+        ],
+      ),
     );
   }
 
@@ -43,6 +60,7 @@ class CarDetailProfileCard extends StatelessWidget {
     Color? color,
   }) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
