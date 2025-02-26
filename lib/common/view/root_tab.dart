@@ -36,7 +36,39 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           CarScreen(),
         ],
       ),
+      floatingActionButton:
+          tabController.index == 0 ? _homeFloatingActionButton() : null,
+      floatingActionButtonLocation: tabController.index == 0
+          ? FloatingActionButtonLocation.centerFloat
+          : null,
       bottomNavigation: _bottomNavigation(),
+    );
+  }
+
+  Widget _homeFloatingActionButton() {
+    return SizedBox(
+      height: 50,
+      child: FloatingActionButton.extended(
+        onPressed: () {},
+        icon: Icon(
+          Icons.add,
+          color: PRIMARY_COLOR,
+        ),
+        label: Text(
+          '입주민 차량',
+          style: TextStyle(
+            fontSize: 14,
+            color: PRIMARY_COLOR,
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+          side: BorderSide(width: 2, color: PRIMARY_COLOR),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 1.5,
+        splashColor: BACKGROUND_GREY_LIGHT_COLOR,
+      ),
     );
   }
 

@@ -67,48 +67,55 @@ class CarDashboardCard2 extends StatelessWidget {
 
   //메인 카드
   Widget _renderMain(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        context.push('/parking/$carType');
-      },
-      child: Container(
-        decoration: BoxDecoration(
+    return AnimatedContainer(
+      duration: Duration(),
+      child: Material(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
-          color: textColor,
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w900,
-                      color: backColor,
+        color: PRIMARY_COLOR,
+        child: InkWell(
+          onTap: () {
+            context.push('/parking/$carType');
+          },
+          //디자인
+          splashColor: BACKGROUND_GREY_LIGHT_COLOR,
+          borderRadius: BorderRadius.circular(12.0),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w900,
+                        color: backColor,
+                      ),
                     ),
-                  ),
-                  Text(
-                    value,
-                    style: TextStyle(
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.w900,
-                      color: backColor,
+                    Text(
+                      value,
+                      style: TextStyle(
+                        fontSize: 28.0,
+                        fontWeight: FontWeight.w900,
+                        color: backColor,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Icon(
-                icon,
-                size: 40,
-                color: backColor,
-              ),
-            ],
+                  ],
+                ),
+                Icon(
+                  icon,
+                  size: 40,
+                  color: backColor,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -117,60 +124,70 @@ class CarDashboardCard2 extends StatelessWidget {
 
   //하위 카드
   Widget _renderItem(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        context.push('/parking/$carType');
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 2,
-            color: Colors.grey.shade200,
-          ),
+    return AnimatedContainer(
+      duration: Duration(),
+      child: Material(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
+          side: BorderSide(
+            width: 2,
+            color: BACKGROUND_GREY_LIGHT_COLOR,
+          ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: backColor,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        icon,
-                        size: 25,
-                        color: textColor,
+        color: Colors.white,
+        child: InkWell(
+          //기능역역
+          onTap: () {
+            context.push('/parking/$carType');
+          },
+
+          //디자인 영역
+          splashColor: BACKGROUND_GREY_LIGHT_COLOR,
+          borderRadius: BorderRadius.circular(12.0),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: backColor,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          icon,
+                          size: 25,
+                          color: textColor,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 8.0,
-                  ),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w500,
+                    SizedBox(
+                      width: 8.0,
                     ),
-                  ),
-                ],
-              ),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 22.0,
-                  fontWeight: FontWeight.w500,
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

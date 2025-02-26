@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_parking/car/component/car_detail_profile_card.dart';
 import 'package:flutter_parking/car/component/car_history_card.dart';
+import 'package:flutter_parking/car/component/visit_bottom_sheet.dart';
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/model/car_detail_model.dart';
 import 'package:flutter_parking/car/provider/car_detail_provider.dart';
@@ -32,24 +33,68 @@ class _CarDetailScreenState extends ConsumerState<CarDetailScreen> {
     final data = ref.watch(carDetailProvider(id: widget.id));
 
     return DefaultLayout(
-        title: '상세정보',
-        body: data.when(
-          loading: () => Center(
-            child: CircularProgressIndicator(),
+      title: '상세정보',
+      body: data.when(
+        loading: () => Center(
+          child: CircularProgressIndicator(),
+        ),
+        data: (data) => SingleChildScrollView(
+          child: Column(
+            spacing: 32,
+            children: [
+              CarDetailProfileCard.fromModel(model: data),
+              renderHistory(data.history!)
+            ],
           ),
-          data: (data) => SingleChildScrollView(
-            child: Column(
-              spacing: 32,
-              children: [
-                CarDetailProfileCard.fromModel(model: data),
-                renderHistory(data.history!)
-              ],
-            ),
-          ),
-          error: (error, stackTrace) => Container(),
-        ));
+        ),
+        error: (error, stackTrace) => Container(),
+      ),
+      floatingActionButton: widget.carType == CarType.outside
+          ? _outSideFloatingActionBtn(carNumber: '12가 3456')
+          : _phoneFloatingActionBtn(),
+    );
   }
 
+  //입주민, 방문차량 floatingActionButton
+  Widget _phoneFloatingActionBtn() {
+    return FloatingActionButton(
+      onPressed: () {},
+      child: Icon(
+        Icons.phone,
+        color: Colors.white,
+      ),
+      elevation: 3,
+      splashColor: PRIMARY_LIGHT_COLOR,
+      shape: CircleBorder(),
+      backgroundColor: PRIMARY_COLOR,
+    );
+  }
+
+  //외부차량 floatingActionButton
+  Widget _outSideFloatingActionBtn({required String carNumber}) {
+    return FloatingActionButton(
+      onPressed: () async {
+        await showModalBottomSheet(
+          context: context,
+          builder: (_) {
+            return VisitBottomSheet(carNumber: carNumber);
+          },
+        );
+      },
+      child: Icon(
+        Icons.add,
+        color: Colors.white,
+      ),
+      elevation: 3,
+      splashColor: PRIMARY_LIGHT_COLOR,
+      shape: CircleBorder(),
+      backgroundColor: PRIMARY_COLOR,
+    );
+  }
+
+  //방문차량 등록
+
+  //입출차 기록 없는 경우 block
   Widget renderBlock() {
     return Container(
       child: Text(

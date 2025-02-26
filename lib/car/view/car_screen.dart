@@ -6,9 +6,6 @@ import 'package:flutter_parking/car/component/search_field.dart';
 
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/provider/car_provider.dart';
-import 'package:flutter_parking/common/const/data.dart';
-import 'package:flutter_parking/common/dio/dio.dart';
-import 'package:flutter_parking/secure_storage/secure_storage_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CarScreen extends ConsumerStatefulWidget {
@@ -20,11 +17,6 @@ class CarScreen extends ConsumerStatefulWidget {
 
 class _CarScreenState extends ConsumerState<CarScreen> {
   bool _dashBoardSwitch = false;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-  }
 
   @override
   Widget build(BuildContext context) {

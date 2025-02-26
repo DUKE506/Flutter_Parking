@@ -50,36 +50,43 @@ class CarParkingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        context.push('/parking/detail/$id/${carType.name}');
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 500),
+      child: Material(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          side: BorderSide(
             width: 2,
             color: BACKGROUND_GREY_LIGHT_COLOR,
           ),
-          borderRadius: BorderRadius.circular(12.0),
-          color: Colors.white,
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-          child: Column(
-            spacing: 8.0,
-            children: [
-              Row(
-                spacing: 8.0,
-                children: [
-                  //차량번호
-                  _title(),
-                  //뱃지
-                  _badge(),
-                ],
-              ),
-              //출입 시간
-              _time(),
-            ],
+        color: Colors.white,
+        child: InkWell(
+          onTap: () {
+            //타입 필요없어짐 추수 수정 후 주석 삭제
+            context.push('/parking/detail/$id/${carType.name}');
+          },
+          splashColor: BACKGROUND_GREY_LIGHT_COLOR,
+          borderRadius: BorderRadius.circular(12.0),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+            child: Column(
+              spacing: 8.0,
+              children: [
+                Row(
+                  spacing: 8.0,
+                  children: [
+                    //차량번호
+                    _title(),
+                    //뱃지
+                    _badge(),
+                  ],
+                ),
+                //출입 시간
+                _time(),
+              ],
+            ),
           ),
         ),
       ),

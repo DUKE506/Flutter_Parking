@@ -25,8 +25,10 @@ class CarParkingListScreen extends ConsumerStatefulWidget {
 class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late ScrollController _scrollController;
   int tabIndex = 0;
   late CarType type;
+  bool isTopPosition = true;
 
   @override
   void initState() {
@@ -38,9 +40,22 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
       vsync: this,
       initialIndex: CarType.values.indexOf(widget.carType),
     );
+    _scrollController = ScrollController();
 
     //탭 변경 시 리스너 등록
     _tabController.addListener(tabListener);
+    _scrollController.addListener(scrollListener);
+  }
+
+  //스크롤시 리스너
+  void scrollListener() {
+    if (_scrollController.position.pixels != 0) {
+      isTopPosition = false;
+    } else {
+      isTopPosition = true;
+    }
+
+    setState(() {});
   }
 
   //탭 누를 때마다 실행
@@ -70,6 +85,7 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
   void dispose() {
     // TODO: implement dispose
     _tabController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -94,7 +110,36 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
         body: _renderTabBarView(
           controller: _tabController,
           rawData: rawData,
+          scrollController: _scrollController,
         ),
+      ),
+      floatingActionButton: _floatingActionButton(isExpanded: isTopPosition),
+    );
+  }
+
+  //floatingActionBtn
+  Widget _floatingActionButton({required bool isExpanded}) {
+    return SizedBox(
+      child: FloatingActionButton.extended(
+        onPressed: () {},
+        icon: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        label: Text(
+          '방문차량 등록',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+          // side: BorderSide(width: 2, color: PRIMARY_COLOR),
+        ),
+        backgroundColor: PRIMARY_COLOR,
+        elevation: 1.5,
+        splashColor: PRIMARY_LIGHT_COLOR,
       ),
     );
   }
@@ -152,7 +197,9 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
   }
 
   Widget _renderTabBarView(
-      {required TabController controller, required ListModelBase rawData}) {
+      {required TabController controller,
+      required ListModelBase rawData,
+      required ScrollController scrollController}) {
     //로딩
     if (rawData is ListModelLoading) {
       return Center(
@@ -183,6 +230,7 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
               // vertical: 16.0,
             ),
             child: ListView.builder(
+              controller: scrollController,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
