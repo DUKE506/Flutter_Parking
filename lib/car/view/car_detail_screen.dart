@@ -74,7 +74,9 @@ class _CarDetailScreenState extends ConsumerState<CarDetailScreen> {
   Widget _outSideFloatingActionBtn({required String carNumber}) {
     return FloatingActionButton(
       onPressed: () async {
-        await showModalBottomSheet(
+        await showModalBottomSheet<void>(
+          backgroundColor: Colors.white,
+          isScrollControlled: true,
           context: context,
           builder: (_) {
             return VisitBottomSheet(carNumber: carNumber);
