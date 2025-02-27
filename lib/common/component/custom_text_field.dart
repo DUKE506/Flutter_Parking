@@ -4,10 +4,12 @@ import 'package:flutter_parking/common/const/colors.dart';
 class CustomTextField extends StatelessWidget {
   final String label;
   final String hintText;
+  final String? initialValue;
   const CustomTextField({
     super.key,
     required this.label,
     required this.hintText,
+    this.initialValue,
   });
 
   @override
@@ -43,8 +45,9 @@ class CustomTextField extends StatelessWidget {
           fontSize: 12.0,
         ),
       ),
+      initialValue: initialValue,
       style: TextStyle(fontSize: 14.0),
-      cursorColor: DEACTIVATE_TEXT_COLOR,
+      cursorColor: PRIMARY_COLOR,
     );
   }
 }

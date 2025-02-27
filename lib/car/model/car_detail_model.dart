@@ -1,5 +1,4 @@
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
-import 'package:flutter_parking/car/model/car_parking_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'car_detail_model.g.dart';

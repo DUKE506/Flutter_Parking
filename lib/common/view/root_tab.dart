@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_parking/car/view/car_screen.dart';
 import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_parking/common/layout/default_layout.dart';
+import 'package:go_router/go_router.dart';
 
 class RootTab extends StatefulWidget {
   const RootTab({super.key});
@@ -37,7 +38,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         ],
       ),
       floatingActionButton:
-          tabController.index == 0 ? _homeFloatingActionButton() : null,
+          tabController.index == 0 ? _homeFloatingActionButton(context) : null,
       floatingActionButtonLocation: tabController.index == 0
           ? FloatingActionButtonLocation.centerFloat
           : null,
@@ -45,11 +46,13 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _homeFloatingActionButton() {
+  Widget _homeFloatingActionButton(BuildContext context) {
     return SizedBox(
       height: 50,
       child: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          context.push('/add/resident');
+        },
         icon: Icon(
           Icons.add,
           color: PRIMARY_COLOR,

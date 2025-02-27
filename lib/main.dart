@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_parking/common/navigation/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,6 +41,16 @@ class _App extends StatelessWidget {
           bodySmall: TextStyle(color: TEXT_COLOR),
         ),
       ),
+      localizationsDelegates: <LocalizationsDelegate<Object>>[
+        // ... app-specific localization delegate(s) here
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('ko', ''),
+        Locale('en', ''),
+      ],
       debugShowCheckedModeBanner: false,
     );
   }

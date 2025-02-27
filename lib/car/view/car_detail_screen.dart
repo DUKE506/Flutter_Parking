@@ -72,14 +72,23 @@ class _CarDetailScreenState extends ConsumerState<CarDetailScreen> {
 
   //외부차량 floatingActionButton
   Widget _outSideFloatingActionBtn({required String carNumber}) {
+    final EdgeInsets padding = MediaQuery.of(context).viewInsets / 2;
     return FloatingActionButton(
       onPressed: () async {
         await showModalBottomSheet<void>(
           backgroundColor: Colors.white,
           isScrollControlled: true,
+          // enableDrag: true,
           context: context,
           builder: (_) {
-            return VisitBottomSheet(carNumber: carNumber);
+            return AnimatedPadding(
+              padding: EdgeInsets.only(
+                      bottom: MediaQuery.viewInsetsOf(context).bottom) /
+                  2,
+              duration: Duration(milliseconds: 200),
+              curve: Curves.easeOut,
+              child: VisitBottomSheet(carNumber: carNumber),
+            );
           },
         );
       },
