@@ -18,8 +18,8 @@ class CustomDatePicker extends StatelessWidget {
         height: 300,
         child: CupertinoDatePicker(
           mode: CupertinoDatePickerMode.dateAndTime,
-          initialDateTime: selectDate.add(Duration(minutes: 1)),
-          minimumDate: DateTime.now(),
+          initialDateTime: selectDate,
+          minimumDate: DateTime.now().subtract(Duration(minutes: 1)),
           onDateTimeChanged: onDateTimeChanged,
           dateOrder: DatePickerDateOrder.ymd,
         ),

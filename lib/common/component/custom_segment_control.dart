@@ -63,12 +63,12 @@ class CustomSegmentControl<T extends Object> extends StatelessWidget {
     final isSelected = key.toString() == initialValue.toString();
 
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: 12.0),
       child: Text(
         label,
         style: TextStyle(
-          color: isSelected ? Colors.white : DEACTIVATE_TEXT_COLOR,
-        ),
+            color: isSelected ? Colors.white : DEACTIVATE_TEXT_COLOR,
+            fontSize: 12.0),
       ),
     );
   }

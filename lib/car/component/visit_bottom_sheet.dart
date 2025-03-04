@@ -7,6 +7,7 @@ import 'package:flutter_parking/common/component/custom_segment_control.dart';
 import 'package:flutter_parking/common/component/custom_date_picker.dart';
 import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_parking/common/component/custom_text_field.dart';
+import 'package:flutter_parking/common/layout/bottom_sheet_layout.dart';
 
 class VisitBottomSheet extends StatefulWidget {
   final String carNumber;
@@ -24,41 +25,11 @@ class _VisitBottomSheetState extends State<VisitBottomSheet> {
   DateTime selectDateTime = DateTime.now();
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SizedBox(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height / 1.4,
-        child: Column(
-          children: [
-            _renderDragHandle(context),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-                  child: Column(
-                    spacing: 16.0,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        '방문차량 등록',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      _formField(),
-                      CustomElevatedButton(onPressed: () {}, label: '등록')
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return BottomSheetLayout(
+      height: MediaQuery.of(context).size.height / 1.4,
+      title: '방문차량 등록',
+      onPressed: () {},
+      child: _formField(),
     );
   }
 
@@ -79,6 +50,10 @@ class _VisitBottomSheetState extends State<VisitBottomSheet> {
           label: '전화번호',
           hintText: '01012345678',
         ),
+        CustomTextField(
+          label: '방문지 주소',
+          hintText: '방문하시는 주소를 입력해주세요',
+        ),
         CustomSegmentControl(
           label: '방문목적',
           initialValue: purpose,
@@ -90,6 +65,11 @@ class _VisitBottomSheetState extends State<VisitBottomSheet> {
             })
           },
         ),
+        if (purpose == VisitPurpose.Etc)
+          CustomTextField(
+            label: '기타',
+            hintText: '방문목적을 입력하세요',
+          ),
         CustomInputButton(
           onTap: onTapDate,
           label: '출차예정시간',
@@ -118,6 +98,7 @@ class _VisitBottomSheetState extends State<VisitBottomSheet> {
     );
   }
 
+  //상단 드래그 핸들링 위치 표시 위젯
   Widget _renderDragHandle(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
