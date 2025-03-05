@@ -5,16 +5,24 @@ class CustomTextField extends StatelessWidget {
   final String label;
   final String hintText;
   final String? initialValue;
+  final FormFieldValidator<String>? validator;
   final VoidCallback? onPressed;
   final String? buttonLabel;
+  final FormFieldSetter<String> onSaved;
+  final bool? readOnly;
+  final TextEditingController? controller;
 
   const CustomTextField({
     super.key,
     required this.label,
     required this.hintText,
+    required this.onSaved,
+    this.validator,
     this.initialValue,
     this.onPressed,
     this.buttonLabel = '검색',
+    this.readOnly = false,
+    this.controller,
   });
 
   @override
@@ -59,9 +67,12 @@ class CustomTextField extends StatelessWidget {
           fontSize: 12.0,
         ),
       ),
-      initialValue: initialValue,
+      controller: controller,
       style: TextStyle(fontSize: 14.0),
       cursorColor: PRIMARY_COLOR,
+      onSaved: onSaved,
+      validator: validator ?? null,
+      readOnly: readOnly ?? false,
     );
   }
 

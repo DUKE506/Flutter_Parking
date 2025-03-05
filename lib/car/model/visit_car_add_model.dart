@@ -1,14 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
 
 enum VisitPurpose {
-  Failmy,
+  Family,
   Business,
   Repairers,
   Etc;
 
   String get KrName {
     switch (this) {
-      case VisitPurpose.Failmy:
+      case VisitPurpose.Family:
         return '가족';
       case VisitPurpose.Business:
         return '비즈니스';
