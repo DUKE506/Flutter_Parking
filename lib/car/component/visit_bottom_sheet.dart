@@ -7,6 +7,7 @@ import 'package:flutter_parking/common/component/custom_date_picker.dart';
 import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_parking/common/component/custom_text_field.dart';
 import 'package:flutter_parking/common/layout/bottom_sheet_layout.dart';
+import 'package:go_router/go_router.dart';
 
 class VisitBottomSheet extends StatefulWidget {
   final String carNumber;
@@ -36,8 +37,9 @@ class _VisitBottomSheetState extends State<VisitBottomSheet> {
     return BottomSheetLayout(
       height: MediaQuery.of(context).size.height / 1.4,
       title: '방문차량 등록',
-      onPressed: () {},
+      onPressed: () => onSavedPress(context),
       child: Form(
+        key: formKey,
         child: _formField(),
       ),
     );
@@ -140,12 +142,15 @@ class _VisitBottomSheetState extends State<VisitBottomSheet> {
     );
   }
 
-  String? _tempValidation(String? value) {
-    if (value == null) {
-      return '값을 입력해주세요!';
-    }
+  void onSavedPress(BuildContext context) {
+    final isValid = formKey.currentState!.validate();
 
-    return null;
+    if (isValid) {
+      formKey.currentState!.save();
+      context.pop();
+    } else {
+      print('실패');
+    }
   }
 
   //===============Validation================
