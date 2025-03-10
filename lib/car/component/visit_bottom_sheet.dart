@@ -1,26 +1,31 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_parking/car/model/car_add_visit_model.dart';
 import 'package:flutter_parking/car/model/visit_car_add_model.dart';
+import 'package:flutter_parking/car/provider/car_detail_provider.dart';
 import 'package:flutter_parking/common/component/custom_input_button.dart';
 import 'package:flutter_parking/common/component/custom_segment_control.dart';
 import 'package:flutter_parking/common/component/custom_date_picker.dart';
 import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_parking/common/component/custom_text_field.dart';
 import 'package:flutter_parking/common/layout/bottom_sheet_layout.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class VisitBottomSheet extends StatefulWidget {
+class VisitBottomSheet extends ConsumerStatefulWidget {
+  final String id;
   final String carNumber;
   const VisitBottomSheet({
     super.key,
+    required this.id,
     required this.carNumber,
   });
 
   @override
-  State<VisitBottomSheet> createState() => _VisitBottomSheetState();
+  ConsumerState<VisitBottomSheet> createState() => _VisitBottomSheetState();
 }
 
-class _VisitBottomSheetState extends State<VisitBottomSheet> {
+class _VisitBottomSheetState extends ConsumerState<VisitBottomSheet> {
   //방문차량 모델
   CarAddVisitModel visitModel = CarAddVisitModel();
 
@@ -28,6 +33,15 @@ class _VisitBottomSheetState extends State<VisitBottomSheet> {
   VisitPurpose purpose = VisitPurpose.values[0];
   //예상출차시간 변수
   DateTime selectDateTime = DateTime.now();
+  //차량번호 입력 컨트롤러
+  final carNumberInputController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    visitModel.id = widget.id;
+    carNumberInputController.text = widget.carNumber;
+  }
 
   //폼 키
   final formKey = GlobalKey<FormState>();
@@ -60,11 +74,12 @@ class _VisitBottomSheetState extends State<VisitBottomSheet> {
         CustomTextField(
           label: '차량번호',
           hintText: '차량번호를 입력하세요',
-          initialValue: widget.carNumber,
+          controller: carNumberInputController,
           validator: onCarNumberValidation,
           onSaved: (value) => {
             visitModel.carNumber = value,
           },
+          readOnly: true,
         ),
         CustomTextField(
           label: '전화번호',
@@ -147,6 +162,10 @@ class _VisitBottomSheetState extends State<VisitBottomSheet> {
 
     if (isValid) {
       formKey.currentState!.save();
+      final provider = ref
+          .read(asyncCarDetailProvider('1').notifier)
+          .addVisitCar(visitModel);
+
       context.pop();
     } else {
       print('실패');

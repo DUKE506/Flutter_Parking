@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_parking/car/component/search_field.dart';
 import 'package:flutter_parking/car/view/car_screen.dart';
 import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_parking/common/layout/default_layout.dart';
@@ -28,6 +29,10 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
+      appBar: switch (tabController.index) {
+        0 => _homeAppBar(),
+        _ => null,
+      },
       body: TabBarView(
         physics: NeverScrollableScrollPhysics(),
         controller: tabController,
@@ -46,6 +51,43 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
     );
   }
 
+  //홈화면 appBar
+  PreferredSizeWidget _homeAppBar() {
+    return AppBar(
+      toolbarHeight: 120,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 16),
+          Text(
+            '일동미라주',
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            '이동희 관리자님',
+            style: TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          SizedBox(height: 8),
+          SearchField(
+            hintText: '차량 번호',
+            readOnly: true,
+          ),
+          SizedBox(height: 8),
+        ],
+      ),
+      elevation: 0,
+      backgroundColor: Colors.white,
+    );
+  }
+
+  //home화면 floating 버튼
   Widget _homeFloatingActionButton(BuildContext context) {
     return SizedBox(
       height: 50,
@@ -75,6 +117,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
     );
   }
 
+  //하단 네비게이션
   Widget _bottomNavigation() {
     return Theme(
       data: ThemeData(

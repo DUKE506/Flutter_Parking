@@ -6,6 +6,7 @@ import 'package:flutter_parking/car/component/search_field.dart';
 
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/provider/car_provider.dart';
+import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CarScreen extends ConsumerStatefulWidget {
@@ -22,61 +23,39 @@ class _CarScreenState extends ConsumerState<CarScreen> {
   Widget build(BuildContext context) {
     final data = ref.watch(carDashboardStateProvider);
 
-    return SizedBox(
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.invalidate(carDashboardStateProvider);
+      },
+      color: PRIMARY_COLOR,
+      backgroundColor: Colors.white,
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+            child: Column(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '일동미라주',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    _renderSizedBox(size: 8),
-                    Text(
-                      '이동희 관리자님',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
+                data.when(
+                  loading: () => Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  data: (models) {
+                    return _dashBoardSwitch
+                        ? _renderDashboard(models: models)
+                        : _renderDashboard2(models: models);
+                  },
+                  error: (error, stackTrace) {
+                    return Center(
+                      child: Text('데이터 조회 실패 ${stackTrace}'),
+                    );
+                  },
                 ),
-                renderSwitch(),
               ],
             ),
-            _renderSizedBox(),
-            SearchField(
-              hintText: '차량 번호',
-              readOnly: true,
-            ),
-            _renderSizedBox(),
-            data.when(
-              loading: () => Center(
-                child: CircularProgressIndicator(),
-              ),
-              data: (models) {
-                return _dashBoardSwitch
-                    ? _renderDashboard(models: models)
-                    : _renderDashboard2(models: models);
-              },
-              error: (error, stackTrace) {
-                return Center(
-                  child: Text('데이터 조회 실패 ${stackTrace}'),
-                );
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -50,7 +50,20 @@ class _CarDetailScreenState extends ConsumerState<CarDetailScreen> {
         error: (error, stackTrace) => Container(),
       ),
       floatingActionButton: widget.carType == CarType.outside
-          ? _outSideFloatingActionBtn(carNumber: '12가 3456')
+          ? data.when(
+              data: (carDetail) => _outSideFloatingActionBtn(
+                carNumber: carDetail.number,
+                id: carDetail.id,
+              ),
+              loading: () => FloatingActionButton(
+                onPressed: () {},
+                child: CircularProgressIndicator(),
+              ),
+              error: (error, stackTrace) => FloatingActionButton(
+                onPressed: () {},
+                child: Icon(Icons.error),
+              ),
+            )
           : _phoneFloatingActionBtn(),
     );
   }
@@ -71,8 +84,10 @@ class _CarDetailScreenState extends ConsumerState<CarDetailScreen> {
   }
 
   //외부차량 floatingActionButton
-  Widget _outSideFloatingActionBtn({required String carNumber}) {
+  Widget _outSideFloatingActionBtn(
+      {required String carNumber, required String id}) {
     final EdgeInsets padding = MediaQuery.of(context).viewInsets / 2;
+
     return FloatingActionButton(
       onPressed: () async {
         await showModalBottomSheet<void>(
@@ -87,7 +102,10 @@ class _CarDetailScreenState extends ConsumerState<CarDetailScreen> {
                   2,
               duration: Duration(milliseconds: 200),
               curve: Curves.easeOut,
-              child: VisitBottomSheet(carNumber: carNumber),
+              child: VisitBottomSheet(
+                carNumber: carNumber,
+                id: widget.id,
+              ),
             );
           },
         );

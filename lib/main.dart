@@ -32,6 +32,7 @@ class _App extends StatelessWidget {
       ),
     );
     return MaterialApp.router(
+      //라우팅
       routerConfig: router,
       theme: ThemeData(
         // fontFamily: 'NotoSans',

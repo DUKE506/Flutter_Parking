@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class DefaultLayout extends StatelessWidget {
   final String? title;
+  final PreferredSizeWidget? appBar;
   final Widget? bottomNavigation;
   final Color backgroundColor;
   final Widget body;
@@ -11,6 +12,7 @@ class DefaultLayout extends StatelessWidget {
   const DefaultLayout({
     super.key,
     this.title,
+    this.appBar,
     this.bottomNavigation,
     this.backgroundColor = Colors.white,
     required this.body,
@@ -36,22 +38,25 @@ class DefaultLayout extends StatelessWidget {
     );
   }
 
-  AppBar? _appBar() {
-    if (title == null) {
-      return null;
-    }
-    return AppBar(
-      centerTitle: true,
-      title: Text(
-        title!,
-        style: TextStyle(
-          fontSize: 16.0,
-          fontWeight: FontWeight.w500,
+  PreferredSizeWidget? _appBar() {
+    if (title != null && appBar == null) {
+      return AppBar(
+        centerTitle: true,
+        title: Text(
+          title!,
+          style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.w500,
+          ),
         ),
-      ),
-      elevation: 0,
-      scrolledUnderElevation: 0,
-      backgroundColor: Colors.white,
-    );
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        backgroundColor: Colors.white,
+      );
+    }
+
+    if (appBar != null && title == null) {
+      return appBar;
+    }
   }
 }

@@ -5,6 +5,7 @@ part 'car_add_visit_model.g.dart';
 
 @JsonSerializable()
 class CarAddVisitModel {
+  String? id;
   String? name;
   String? carNumber;
   String? phone;

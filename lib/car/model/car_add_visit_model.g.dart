@@ -18,10 +18,11 @@ CarAddVisitModel _$CarAddVisitModelFromJson(Map<String, dynamic> json) =>
       departureTime: json['departureTime'] == null
           ? null
           : DateTime.parse(json['departureTime'] as String),
-    );
+    )..id = json['id'] as String?;
 
 Map<String, dynamic> _$CarAddVisitModelToJson(CarAddVisitModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'carNumber': instance.carNumber,
       'phone': instance.phone,
