@@ -25,5 +25,22 @@ final carDashboardStateProvider =
 // ignore: unused_element
 typedef CarDashboardStateRef
     = AutoDisposeFutureProviderRef<List<CarDashboardModel>>;
+String _$asyncResidentNotifierHash() =>
+    r'97401303c2f41c6e125ca41e60bd753da59e0b1e';
+
+/// See also [AsyncResidentNotifier].
+@ProviderFor(AsyncResidentNotifier)
+final asyncResidentNotifierProvider = AutoDisposeAsyncNotifierProvider<
+    AsyncResidentNotifier, CarAddResidentModel>.internal(
+  AsyncResidentNotifier.new,
+  name: r'asyncResidentNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$asyncResidentNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$AsyncResidentNotifier = AutoDisposeAsyncNotifier<CarAddResidentModel>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

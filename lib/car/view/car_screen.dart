@@ -1,8 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_parking/car/component/car_dashboard_card.dart';
 import 'package:flutter_parking/car/component/car_dashboard_card2.dart';
-import 'package:flutter_parking/car/component/search_field.dart';
 
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/provider/car_provider.dart';

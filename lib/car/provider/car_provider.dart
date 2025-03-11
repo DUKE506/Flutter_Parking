@@ -1,3 +1,4 @@
+import 'package:flutter_parking/car/model/car_add_resident_model.dart';
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/repository/car_repository.dart';
 import 'package:flutter_parking/common/model/list_model.dart';
@@ -20,6 +21,7 @@ Future<List<CarDashboardModel>> carDashboardState(ref) async {
   return data;
 }
 
+//프로바이더
 final carStateProvider =
     StateNotifierProvider.family<CarStateNotifier, ListModelBase, CarType?>(
         (ref, type) {
@@ -62,5 +64,25 @@ class CarStateNotifier extends StateNotifier<ListModelBase> {
   void getDetail({required String id}) async {
     print('[CarStateNotifier][getDetail] 상세조회 함수 시작 (파라미터 : ${id})');
     final res = await repository.getDetailById(id: id);
+  }
+}
+
+//=======================================================
+
+@riverpod
+class AsyncResidentNotifier extends _$AsyncResidentNotifier {
+  @override
+  FutureOr<CarAddResidentModel> build() async {
+    return CarAddResidentModel();
+  }
+
+  Future<void> addResidentCar(CarAddResidentModel model) async {
+    state = const AsyncValue.loading();
+
+    final repository = ref.read(carRepositoryProvider);
+
+    await AsyncValue.guard(() async {
+      await repository.addResidentCar(model: model);
+    });
   }
 }

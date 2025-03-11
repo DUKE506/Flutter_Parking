@@ -100,7 +100,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           color: PRIMARY_COLOR,
         ),
         label: Text(
-          '입주민 차량',
+          '입주 차량',
           style: TextStyle(
             fontSize: 14,
             color: PRIMARY_COLOR,

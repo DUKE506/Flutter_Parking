@@ -5,7 +5,7 @@
 //
 
 import 'package:dio/dio.dart';
-import 'package:flutter_parking/car/const/data.dart';
+import 'package:flutter_parking/car/model/car_add_resident_model.dart';
 import 'package:flutter_parking/car/model/car_add_visit_model.dart';
 import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/model/car_detail_model.dart';
@@ -48,5 +48,9 @@ abstract class CarRepository {
   @POST('/add/visit')
   Future<void> addVisitCar({
     @Body() required CarAddVisitModel model,
+  });
+  @POST('/add/resident')
+  Future<void> addResidentCar({
+    @Body() required CarAddResidentModel model,
   });
 }

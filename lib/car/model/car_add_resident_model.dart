@@ -7,6 +7,8 @@ class CarAddResidentModel {
   //이름
   String? name;
   //차량번호
+  String? modelName;
+  //차량번호
   String? carNumber;
   //전화번호
   String? phone;
@@ -21,6 +23,7 @@ class CarAddResidentModel {
   CarAddResidentModel({
     this.name,
     this.carNumber,
+    this.modelName,
     this.phone,
     this.zoneCode,
     this.address,

@@ -22,47 +22,50 @@ class CarParkingListScreen extends ConsumerStatefulWidget {
 
 class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  late ScrollController _scrollController;
+  //CustomScroll start
+  late TabController tabController;
+  late ScrollController scrollController;
   int tabIndex = 0;
   late CarType type;
-  bool isTopPosition = true;
+  //CustomScroll end
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    type = widget.carType;
-    _tabController = TabController(
+    //=======================
+    tabController = TabController(
       length: CarType.values.length,
       vsync: this,
       initialIndex: CarType.values.indexOf(widget.carType),
     );
-    _scrollController = ScrollController();
+    scrollController = ScrollController();
+    type = widget.carType;
+    //=======================
 
-    //탭 변경 시 리스너 등록
-    _tabController.addListener(tabListener);
-    _scrollController.addListener(scrollListener);
+    // //탭 변경 시 리스너 등록
+    tabController.addListener(tabListener);
+    // _scrollController.addListener(scrollListener);
   }
 
   //스크롤시 리스너
-  void scrollListener() {
-    if (_scrollController.position.pixels != 0) {
-      isTopPosition = false;
-    } else {
-      isTopPosition = true;
-    }
+  // void scrollListener() {
+  //   if (sc.position.pixels != 0) {
+  //     isTopPosition = false;
+  //   } else {
+  //     isTopPosition = true;
+  //   }
 
-    setState(() {});
-  }
+  //   setState(() {});
+  // }
 
   //탭 누를 때마다 실행
   void tabListener() {
     //인덱스가 변경됐을때만
-    if (!_tabController.indexIsChanging) {
+    if (!tabController.indexIsChanging) {
       return;
     }
-    tabIndex = _tabController.index;
+    tabIndex = tabController.index;
     type = CarType.values[tabIndex];
     ref.read(carStateProvider(type).notifier).fetchData();
     setState(() {});
@@ -82,8 +85,11 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
   @override
   void dispose() {
     // TODO: implement dispose
-    _tabController.dispose();
-    _scrollController.dispose();
+    tabController.dispose();
+    scrollController.dispose();
+
+    // _tabController.dispose();
+    // _scrollController.dispose();
     super.dispose();
   }
 
@@ -95,25 +101,116 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            _renderAppBar(title: '주차 차량'),
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: customSliverPersistentHeaderDelegate(
-                child: SearchField(),
-              ),
-            ),
-            _tab(tabController: _tabController),
+            _sliverAppBar(),
+            _sliverPersistentSearchHeader(),
+            _sliverPersistentTabBarHeader(tabController),
           ];
         },
-        body: _renderTabBarView(
-          controller: _tabController,
-          rawData: rawData,
-          scrollController: _scrollController,
-        ),
+        body: _sliverBody(controller: scrollController, rawData: rawData),
       ),
-      floatingActionButton: _floatingActionButton(isExpanded: isTopPosition),
     );
   }
+
+  //CustomScrollView START
+
+  //SliverAppBar
+  SliverAppBar _sliverAppBar() {
+    return SliverAppBar(
+      backgroundColor: Colors.white,
+      pinned: false,
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: true,
+        title: Text(
+          '주차',
+          style: TextStyle(fontSize: 16.0),
+        ),
+      ),
+    );
+  }
+
+  SliverPersistentHeader _sliverPersistentSearchHeader() {
+    return SliverPersistentHeader(
+      floating: true,
+      delegate: SearchDelegate(),
+    );
+  }
+
+  SliverPersistentHeader _sliverPersistentTabBarHeader(
+      TabController controller) {
+    return SliverPersistentHeader(
+      pinned: true,
+      floating: true,
+      delegate: TabBarDelegate(controller: controller),
+    );
+  }
+
+  Widget _sliverBody({
+    required ScrollController controller,
+    required ListModelBase rawData,
+  }) {
+    //로딩
+    if (rawData is ListModelLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    //에러
+    if (rawData is ListModelError) {
+      return Center(
+        child: Text(
+          rawData.message,
+        ),
+      );
+    }
+
+    final data = rawData as ListModel;
+    return TabBarView(
+      controller: tabController,
+      physics: NeverScrollableScrollPhysics(),
+      children: CarType.values.map(
+        (type) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(carStateProvider(type));
+            },
+            color: PRIMARY_COLOR,
+            backgroundColor: Colors.white,
+            child: Container(
+              color: Colors.white,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                // vertical: 16.0,
+              ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  // 데이터의 총 높이 계산 (대략적인 값, 실제 높이는 렌더링 후에만 알 수 있음)
+                  double estimatedHeight =
+                      data.data.length * 100.0; // 카드 높이 + 패딩 값을 대략적으로 예상
+                  return CustomScrollView(
+                    slivers: [
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: CarParkingCard.fromModel(
+                                model: data.data[index]),
+                          ),
+                          childCount: data.data.length,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          );
+        },
+      ).toList(),
+    );
+  }
+
+  //CustomScrollView END
 
   //floatingActionBtn
   Widget _floatingActionButton({required bool isExpanded}) {
@@ -193,105 +290,77 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
       ),
     );
   }
-
-  Widget _renderTabBarView(
-      {required TabController controller,
-      required ListModelBase rawData,
-      required ScrollController scrollController}) {
-    //로딩
-    if (rawData is ListModelLoading) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    //에러
-    if (rawData is ListModelError) {
-      return Center(
-        child: Text(
-          rawData.message,
-        ),
-      );
-    }
-
-    final data = rawData as ListModel;
-
-    return TabBarView(
-      controller: controller,
-      physics: NeverScrollableScrollPhysics(),
-      children: CarType.values.map(
-        (type) {
-          return Container(
-            color: Colors.white,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              // vertical: 16.0,
-            ),
-            child: ListView.builder(
-              controller: scrollController,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child: CarParkingCard.fromModel(model: data.data[index]),
-                );
-              },
-              itemCount: data.data.length,
-            ),
-          );
-        },
-      ).toList(),
-    );
-  }
-
-  SliverAppBar _renderAppBar({required String title}) {
-    return SliverAppBar(
-      centerTitle: true,
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 16.0,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      elevation: 0,
-      scrolledUnderElevation: 0,
-      backgroundColor: Colors.white,
-    );
-  }
 }
 
-class customSliverPersistentHeaderDelegate
-    extends SliverPersistentHeaderDelegate {
-  final Widget child;
-
-  customSliverPersistentHeaderDelegate({
-    required this.child,
+class TabBarDelegate extends SliverPersistentHeaderDelegate {
+  final TabController controller;
+  const TabBarDelegate({
+    required this.controller,
   });
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // TODO: implement build
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
+      color: Colors.white,
+      child: TabBar(
+        controller: controller,
+        tabs: [
+          ...CarType.values.map(
+            (type) => Tab(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                color: Colors.white,
+                child: Text(
+                  type.KrName,
+                ),
+              ),
+            ),
+          )
+        ],
+        indicatorWeight: 2,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        unselectedLabelColor: Colors.grey,
+        labelColor: Colors.black,
+        indicatorColor: Colors.black,
+        indicatorSize: TabBarIndicatorSize.label,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: child,
     );
   }
 
   @override
-  // TODO: implement maxExtent
   double get maxExtent => 48;
 
   @override
-  // TODO: implement minExtent
   double get minExtent => 48;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    // TODO: implement shouldRebuild
-    return true;
+    return false;
+  }
+}
+
+class SearchDelegate extends SliverPersistentHeaderDelegate {
+  const SearchDelegate();
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: SearchField(),
+    );
+  }
+
+  @override
+  double get maxExtent => 48;
+
+  @override
+  double get minExtent => 48;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
   }
 }
