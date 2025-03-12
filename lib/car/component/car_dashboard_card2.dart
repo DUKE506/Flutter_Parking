@@ -9,6 +9,7 @@ class CarDashboardCard2 extends StatelessWidget {
   final String value;
   final Color textColor;
   final Color backColor;
+  final GestureTapCallback onTap;
   final bool? isFirst;
   //필요할 때만(url 때문에 사용중)
   final CarType? carType;
@@ -20,12 +21,15 @@ class CarDashboardCard2 extends StatelessWidget {
     required this.value,
     required this.textColor,
     required this.backColor,
+    required this.onTap,
     this.carType,
     this.isFirst = false,
   });
 
   factory CarDashboardCard2.fromModel(
-      {required CarDashboardModel model, bool? isFirst = false}) {
+      {required CarDashboardModel model,
+      bool? isFirst = false,
+      required GestureTapCallback onTap}) {
     Color textColor = PARKING_ALL_TEXT_COLOR;
     Color backColor = PARKING_ALL_BACK_COLOR;
     IconData icon = Icons.directions_car;
@@ -57,6 +61,7 @@ class CarDashboardCard2 extends StatelessWidget {
       backColor: backColor,
       isFirst: isFirst,
       carType: model.carType,
+      onTap: onTap,
     );
   }
 
@@ -75,9 +80,10 @@ class CarDashboardCard2 extends StatelessWidget {
         ),
         color: PRIMARY_COLOR,
         child: InkWell(
-          onTap: () {
-            context.push('/parking/$carType');
-          },
+          onTap: onTap,
+          // onTap: () {
+          //   context.push('/parking/$carType');
+          // },
           //디자인
           splashColor: BACKGROUND_GREY_LIGHT_COLOR,
           borderRadius: BorderRadius.circular(12.0),

@@ -21,6 +21,9 @@ class CarDetailProfileCard extends StatelessWidget {
   });
 
   factory CarDetailProfileCard.fromModel({required CarDetailModel model}) {
+    print('카드 컴포넌트 전달받은 데이터 id : ${model.id}');
+    print('카드 컴포넌트 전달받은 데이터 이름 : ${model.name}');
+    print('카드 컴포넌트 전달받은 데이터 차번호 : ${model.number}');
     return CarDetailProfileCard(
       name: model.name,
       number: model.number,

@@ -6,7 +6,7 @@ part of 'car_detail_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$carDetailHash() => r'f9977dd69c292c53f3e4bc74004c9a985355192f';
+String _$carDetailHash() => r'f4f0918793282d9dada687dfe8f7fa2b5a71b174';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -40,10 +40,10 @@ class CarDetailFamily extends Family<AsyncValue<CarDetailModel>> {
 
   /// See also [carDetail].
   CarDetailProvider call({
-    required String id,
+    required String carNumber,
   }) {
     return CarDetailProvider(
-      id: id,
+      carNumber: carNumber,
     );
   }
 
@@ -52,7 +52,7 @@ class CarDetailFamily extends Family<AsyncValue<CarDetailModel>> {
     covariant CarDetailProvider provider,
   ) {
     return call(
-      id: provider.id,
+      carNumber: provider.carNumber,
     );
   }
 
@@ -75,11 +75,11 @@ class CarDetailFamily extends Family<AsyncValue<CarDetailModel>> {
 class CarDetailProvider extends FutureProvider<CarDetailModel> {
   /// See also [carDetail].
   CarDetailProvider({
-    required String id,
+    required String carNumber,
   }) : this._internal(
           (ref) => carDetail(
             ref as CarDetailRef,
-            id: id,
+            carNumber: carNumber,
           ),
           from: carDetailProvider,
           name: r'carDetailProvider',
@@ -89,7 +89,7 @@ class CarDetailProvider extends FutureProvider<CarDetailModel> {
                   : _$carDetailHash,
           dependencies: CarDetailFamily._dependencies,
           allTransitiveDependencies: CarDetailFamily._allTransitiveDependencies,
-          id: id,
+          carNumber: carNumber,
         );
 
   CarDetailProvider._internal(
@@ -99,10 +99,10 @@ class CarDetailProvider extends FutureProvider<CarDetailModel> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.id,
+    required this.carNumber,
   }) : super.internal();
 
-  final String id;
+  final String carNumber;
 
   @override
   Override overrideWith(
@@ -117,7 +117,7 @@ class CarDetailProvider extends FutureProvider<CarDetailModel> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        id: id,
+        carNumber: carNumber,
       ),
     );
   }
@@ -129,13 +129,13 @@ class CarDetailProvider extends FutureProvider<CarDetailModel> {
 
   @override
   bool operator ==(Object other) {
-    return other is CarDetailProvider && other.id == id;
+    return other is CarDetailProvider && other.carNumber == carNumber;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, id.hashCode);
+    hash = _SystemHash.combine(hash, carNumber.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -144,8 +144,8 @@ class CarDetailProvider extends FutureProvider<CarDetailModel> {
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin CarDetailRef on FutureProviderRef<CarDetailModel> {
-  /// The parameter `id` of this provider.
-  String get id;
+  /// The parameter `carNumber` of this provider.
+  String get carNumber;
 }
 
 class _CarDetailProviderElement extends FutureProviderElement<CarDetailModel>
@@ -153,17 +153,17 @@ class _CarDetailProviderElement extends FutureProviderElement<CarDetailModel>
   _CarDetailProviderElement(super.provider);
 
   @override
-  String get id => (origin as CarDetailProvider).id;
+  String get carNumber => (origin as CarDetailProvider).carNumber;
 }
 
-String _$asyncCarDetailHash() => r'4607b98aa4fbb4840cda8990dd6fa19babf31581';
+String _$asyncCarDetailHash() => r'8c5f7baaa47fa5c7ee818ed2130e80db1bdd502c';
 
 abstract class _$AsyncCarDetail
     extends BuildlessAutoDisposeAsyncNotifier<CarDetailModel> {
-  late final String id;
+  late final String carNumber;
 
   FutureOr<CarDetailModel> build(
-    String id,
+    String carNumber,
   );
 }
 
@@ -178,10 +178,10 @@ class AsyncCarDetailFamily extends Family<AsyncValue<CarDetailModel>> {
 
   /// See also [AsyncCarDetail].
   AsyncCarDetailProvider call(
-    String id,
+    String carNumber,
   ) {
     return AsyncCarDetailProvider(
-      id,
+      carNumber,
     );
   }
 
@@ -190,7 +190,7 @@ class AsyncCarDetailFamily extends Family<AsyncValue<CarDetailModel>> {
     covariant AsyncCarDetailProvider provider,
   ) {
     return call(
-      provider.id,
+      provider.carNumber,
     );
   }
 
@@ -214,9 +214,9 @@ class AsyncCarDetailProvider extends AutoDisposeAsyncNotifierProviderImpl<
     AsyncCarDetail, CarDetailModel> {
   /// See also [AsyncCarDetail].
   AsyncCarDetailProvider(
-    String id,
+    String carNumber,
   ) : this._internal(
-          () => AsyncCarDetail()..id = id,
+          () => AsyncCarDetail()..carNumber = carNumber,
           from: asyncCarDetailProvider,
           name: r'asyncCarDetailProvider',
           debugGetCreateSourceHash:
@@ -226,7 +226,7 @@ class AsyncCarDetailProvider extends AutoDisposeAsyncNotifierProviderImpl<
           dependencies: AsyncCarDetailFamily._dependencies,
           allTransitiveDependencies:
               AsyncCarDetailFamily._allTransitiveDependencies,
-          id: id,
+          carNumber: carNumber,
         );
 
   AsyncCarDetailProvider._internal(
@@ -236,17 +236,17 @@ class AsyncCarDetailProvider extends AutoDisposeAsyncNotifierProviderImpl<
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.id,
+    required this.carNumber,
   }) : super.internal();
 
-  final String id;
+  final String carNumber;
 
   @override
   FutureOr<CarDetailModel> runNotifierBuild(
     covariant AsyncCarDetail notifier,
   ) {
     return notifier.build(
-      id,
+      carNumber,
     );
   }
 
@@ -255,13 +255,13 @@ class AsyncCarDetailProvider extends AutoDisposeAsyncNotifierProviderImpl<
     return ProviderOverride(
       origin: this,
       override: AsyncCarDetailProvider._internal(
-        () => create()..id = id,
+        () => create()..carNumber = carNumber,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        id: id,
+        carNumber: carNumber,
       ),
     );
   }
@@ -274,13 +274,13 @@ class AsyncCarDetailProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   bool operator ==(Object other) {
-    return other is AsyncCarDetailProvider && other.id == id;
+    return other is AsyncCarDetailProvider && other.carNumber == carNumber;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, id.hashCode);
+    hash = _SystemHash.combine(hash, carNumber.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -289,8 +289,8 @@ class AsyncCarDetailProvider extends AutoDisposeAsyncNotifierProviderImpl<
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin AsyncCarDetailRef on AutoDisposeAsyncNotifierProviderRef<CarDetailModel> {
-  /// The parameter `id` of this provider.
-  String get id;
+  /// The parameter `carNumber` of this provider.
+  String get carNumber;
 }
 
 class _AsyncCarDetailProviderElement
@@ -299,7 +299,7 @@ class _AsyncCarDetailProviderElement
   _AsyncCarDetailProviderElement(super.provider);
 
   @override
-  String get id => (origin as AsyncCarDetailProvider).id;
+  String get carNumber => (origin as AsyncCarDetailProvider).carNumber;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -7,6 +7,7 @@ import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_parking/common/layout/default_layout.dart';
 import 'package:flutter_parking/common/model/list_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class CarParkingListScreen extends ConsumerStatefulWidget {
   final CarType carType;
@@ -184,9 +185,9 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
               ),
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  // 데이터의 총 높이 계산 (대략적인 값, 실제 높이는 렌더링 후에만 알 수 있음)
-                  double estimatedHeight =
-                      data.data.length * 100.0; // 카드 높이 + 패딩 값을 대략적으로 예상
+                  // // 데이터의 총 높이 계산 (대략적인 값, 실제 높이는 렌더링 후에만 알 수 있음)
+                  // double estimatedHeight =
+                  //     data.data.length * 100.0; // 카드 높이 + 패딩 값을 대략적으로 예상
                   return CustomScrollView(
                     slivers: [
                       SliverList(
@@ -194,7 +195,16 @@ class _CarParkingListScreenState extends ConsumerState<CarParkingListScreen>
                           (context, index) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             child: CarParkingCard.fromModel(
-                                model: data.data[index]),
+                                model: data.data[index],
+                                onTap: () {
+                                  context
+                                      .push(
+                                          '/parking/detail/${data.data[index].number}/${type.name}')
+                                      .then((value) {
+                                    ref.invalidate(carStateProvider(type));
+                                    setState(() {});
+                                  });
+                                }),
                           ),
                           childCount: data.data.length,
                         ),
@@ -321,8 +331,8 @@ class TabBarDelegate extends SliverPersistentHeaderDelegate {
         indicatorWeight: 2,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         unselectedLabelColor: Colors.grey,
-        labelColor: Colors.black,
-        indicatorColor: Colors.black,
+        labelColor: PRIMARY_COLOR,
+        indicatorColor: PRIMARY_COLOR,
         indicatorSize: TabBarIndicatorSize.label,
       ),
     );

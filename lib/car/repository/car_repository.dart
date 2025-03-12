@@ -40,9 +40,9 @@ abstract class CarRepository {
     @Path('type') required CarType type,
   });
 
-  @GET('/detail/{id}')
-  Future<CarDetailModel> getDetailById({
-    @Path('id') required String id,
+  @GET('/detail/{carNumber}')
+  Future<CarDetailModel> getDetailByCarNumber({
+    @Path('carNumber') required String carNumber,
   });
 
   @POST('/add/visit')

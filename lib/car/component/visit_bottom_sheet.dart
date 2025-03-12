@@ -163,10 +163,10 @@ class _VisitBottomSheetState extends ConsumerState<VisitBottomSheet> {
     if (isValid) {
       formKey.currentState!.save();
       final provider = ref
-          .read(asyncCarDetailProvider('1').notifier)
+          .read(asyncCarDetailProvider(widget.id).notifier)
           .addVisitCar(visitModel);
-
       context.pop();
+      ref.invalidate(carDetailProvider(carNumber: widget.carNumber));
     } else {
       print('실패');
     }

@@ -7,24 +7,24 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'car_detail_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<CarDetailModel> carDetail(Ref ref, {required String id}) async {
+Future<CarDetailModel> carDetail(Ref ref, {required String carNumber}) async {
   final repository = ref.watch(carRepositoryProvider);
 
-  final res = await repository.getDetailById(id: id);
+  final res = await repository.getDetailByCarNumber(carNumber: carNumber);
 
   return res;
 }
 
 @riverpod
 class AsyncCarDetail extends _$AsyncCarDetail {
-  Future<CarDetailModel> _fetchCarDetail({required String id}) async {
+  Future<CarDetailModel> _fetchCarDetail({required String carNumber}) async {
     final repository = ref.read(carRepositoryProvider);
-    return await repository.getDetailById(id: id);
+    return await repository.getDetailByCarNumber(carNumber: carNumber);
   }
 
   @override
-  FutureOr<CarDetailModel> build(String id) async {
-    return await _fetchCarDetail(id: id);
+  FutureOr<CarDetailModel> build(String carNumber) async {
+    return await _fetchCarDetail(carNumber: carNumber);
   }
 
   Future<void> addVisitCar(CarAddVisitModel model) async {

@@ -61,9 +61,9 @@ class CarStateNotifier extends StateNotifier<ListModelBase> {
     state = await repository.getCarByType(type: type!);
   }
 
-  void getDetail({required String id}) async {
-    print('[CarStateNotifier][getDetail] 상세조회 함수 시작 (파라미터 : ${id})');
-    final res = await repository.getDetailById(id: id);
+  void getDetail({required String carNumber}) async {
+    print('[CarStateNotifier][getDetail] 상세조회 함수 시작 (파라미터 : ${carNumber})');
+    final res = await repository.getDetailByCarNumber(carNumber: carNumber);
   }
 }
 

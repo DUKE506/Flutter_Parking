@@ -6,6 +6,7 @@ import 'package:flutter_parking/car/model/car_dashboard_model.dart';
 import 'package:flutter_parking/car/provider/car_provider.dart';
 import 'package:flutter_parking/common/const/colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class CarScreen extends ConsumerStatefulWidget {
   const CarScreen({super.key});
@@ -43,7 +44,7 @@ class _CarScreenState extends ConsumerState<CarScreen> {
                   data: (models) {
                     return _dashBoardSwitch
                         ? _renderDashboard(models: models)
-                        : _renderDashboard2(models: models);
+                        : _renderDashboard2(models: models, context: context);
                   },
                   error: (error, stackTrace) {
                     return Center(
@@ -76,15 +77,21 @@ class _CarScreenState extends ConsumerState<CarScreen> {
   }
 
   //대시보드2
-  Widget _renderDashboard2({required List<CarDashboardModel> models}) {
+  Widget _renderDashboard2(
+      {required List<CarDashboardModel> models,
+      required BuildContext context}) {
     return Column(
       spacing: 8.0,
       children: List.generate(
         models.length,
         (index) => CarDashboardCard2.fromModel(
-          model: models[index],
-          isFirst: index == 0,
-        ),
+            model: models[index],
+            isFirst: index == 0,
+            onTap: () =>
+                context.push('/parking/${models[index].carType}').then((value) {
+                  ref.invalidate(carDashboardStateProvider);
+                  setState(() {});
+                })),
       ),
     );
   }

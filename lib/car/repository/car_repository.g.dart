@@ -82,7 +82,9 @@ class _CarRepository implements CarRepository {
   }
 
   @override
-  Future<CarDetailModel> getDetailById({required String id}) async {
+  Future<CarDetailModel> getDetailByCarNumber({
+    required String carNumber,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -91,7 +93,7 @@ class _CarRepository implements CarRepository {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/detail/${id}',
+            '/detail/${carNumber}',
             queryParameters: queryParameters,
             data: _data,
           )

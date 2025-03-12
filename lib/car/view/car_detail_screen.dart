@@ -10,11 +10,11 @@ import 'package:flutter_parking/common/layout/default_layout.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CarDetailScreen extends ConsumerStatefulWidget {
-  final String id;
+  final String number;
   final CarType carType;
   const CarDetailScreen({
     super.key,
-    required this.id,
+    required this.number,
     required this.carType,
   });
 
@@ -30,7 +30,7 @@ class _CarDetailScreenState extends ConsumerState<CarDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final data = ref.watch(carDetailProvider(id: widget.id));
+    final data = ref.watch(carDetailProvider(carNumber: widget.number));
 
     return DefaultLayout(
       title: '상세정보',
@@ -38,13 +38,22 @@ class _CarDetailScreenState extends ConsumerState<CarDetailScreen> {
         loading: () => Center(
           child: CircularProgressIndicator(),
         ),
-        data: (data) => SingleChildScrollView(
-          child: Column(
-            spacing: 32,
-            children: [
-              CarDetailProfileCard.fromModel(model: data),
-              renderHistory(data.history!)
-            ],
+        data: (data) => RefreshIndicator(
+          onRefresh: () async {
+            ref.invalidate(carDetailProvider(carNumber: widget.number));
+          },
+          backgroundColor: Colors.white,
+          color: PRIMARY_COLOR,
+          child: SingleChildScrollView(
+            //SingleChildScrollView에서 physics가 있어야 refreshIndicator 동작함
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              spacing: 32,
+              children: [
+                CarDetailProfileCard.fromModel(model: data),
+                renderHistory(data.history!)
+              ],
+            ),
           ),
         ),
         error: (error, stackTrace) => Container(),
@@ -104,7 +113,7 @@ class _CarDetailScreenState extends ConsumerState<CarDetailScreen> {
               curve: Curves.easeOut,
               child: VisitBottomSheet(
                 carNumber: carNumber,
-                id: widget.id,
+                id: id,
               ),
             );
           },

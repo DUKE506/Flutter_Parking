@@ -13,6 +13,7 @@ class CarParkingCard extends StatelessWidget {
   final CarType carType;
   final Color textColor;
   final Color backColor;
+  final GestureTapCallback onTap;
 
   const CarParkingCard({
     super.key,
@@ -23,9 +24,11 @@ class CarParkingCard extends StatelessWidget {
     required this.carType,
     required this.textColor,
     required this.backColor,
+    required this.onTap,
   });
 
-  factory CarParkingCard.fromModel({required CarParkingModel model}) {
+  factory CarParkingCard.fromModel(
+      {required CarParkingModel model, required GestureTapCallback onTap}) {
     Color textColor = PARKING_ALL_TEXT_COLOR;
     Color backColor = PARKING_ALL_BACK_COLOR;
     String? name = model.name ?? '';
@@ -45,6 +48,7 @@ class CarParkingCard extends StatelessWidget {
       carType: model.carType,
       textColor: textColor,
       backColor: backColor,
+      onTap: onTap,
     );
   }
 
@@ -62,10 +66,11 @@ class CarParkingCard extends StatelessWidget {
         ),
         color: Colors.white,
         child: InkWell(
-          onTap: () {
-            //타입 필요없어짐 추수 수정 후 주석 삭제
-            context.push('/parking/detail/$id/${carType.name}');
-          },
+          // onTap: () {
+          //   //타입 필요없어짐 추수 수정 후 주석 삭제
+          //   context.push('/parking/detail/$id/${carType.name}');
+          // },
+          onTap: onTap,
           splashColor: BACKGROUND_GREY_LIGHT_COLOR,
           borderRadius: BorderRadius.circular(12.0),
           child: Padding(
